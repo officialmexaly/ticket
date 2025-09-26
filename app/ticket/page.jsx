@@ -398,22 +398,21 @@ const TicketCreationScreen = () => {
         </div>
       )}
 
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-    <button
-      onClick={() => router.push("/")}
-      className="text-gray-600 hover:text-gray-800 transition-colors"
-    >
-      <ChevronLeft className="w-5 h-5" />
-    </button>
-              <nav className="flex items-center text-sm text-gray-600">
-                <span>Tickets</span>
-                <span className="mx-2">/</span>
+      {/* Enhanced Header */}
+      <div className="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-center justify-between py-4">
+            <div className="flex items-center space-x-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-4 h-3 bg-white rounded-sm transform -skew-x-12"></div>
+              </div>
+              <div className="flex items-center text-sm text-gray-500 space-x-2">
+                <button onClick={() => router.push("/")} className="hover:text-gray-700 cursor-pointer">Support</button>
+                <ChevronLeft className="w-4 h-4 text-gray-400 rotate-180" />
+                <button onClick={() => router.push("/")} className="hover:text-gray-700 cursor-pointer">Tickets</button>
+                <ChevronLeft className="w-4 h-4 text-gray-400 rotate-180" />
                 <span className="text-gray-900 font-medium">Create New Ticket</span>
-              </nav>
+              </div>
             </div>
 
             <div className="flex items-center gap-3">
@@ -474,53 +473,74 @@ const TicketCreationScreen = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-6 py-4 pb-20">
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="max-w-4xl mx-auto px-6 py-6 pb-20">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
           {/* Form Header */}
-          <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
+          <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">
                 T
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Create New Ticket</h1>
-                <p className="text-gray-600">Provide details about your request or issue</p>
+                <h1 className="text-xl font-bold text-gray-900">Create New Ticket</h1>
+                <p className="text-sm text-gray-600">Provide details about your request or issue</p>
               </div>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            {/* Action Buttons - Moved to Top */}
-            <div className="flex items-center justify-between pb-4 border-b border-gray-200 bg-gray-50 -m-6 mb-4 p-6 rounded-t-xl">
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleSaveDraft}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors border border-gray-300"
-                  disabled={isLoading || (!formData.subject && (!formData.description || formData.description === '<p></p>'))}
-                >
-                  <Save className="w-3.5 h-3.5" />
-                  Save Draft
-                </button>
+          {/* Action Buttons */}
+          <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleSaveDraft}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors border border-gray-300"
+                disabled={isLoading || (!formData.subject && (!formData.description || formData.description === '<p></p>'))}
+              >
+                <Save className="w-4 h-4" />
+                Save Draft
+              </button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (window.confirm('Are you sure you want to discard this ticket? All unsaved changes will be lost.')) {
-                      setFormData({ subject: '', description: '', priority: 'Medium', type: 'Question', status: 'Open', userIdentifier: '' });
-                      voiceNotes.forEach(note => {
-                        if (note.url) URL.revokeObjectURL(note.url);
-                      });
-                      setVoiceNotes([]);
-                    }
-                  }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-red-300"
-                  disabled={isLoading}
-                >
-                  <X className="w-3.5 h-3.5" />
-                  Discard
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm('Are you sure you want to discard this ticket? All unsaved changes will be lost.')) {
+                    setFormData({ subject: '', description: '', priority: 'Medium', type: 'Question', status: 'Open', userIdentifier: '' });
+                    voiceNotes.forEach(note => {
+                      if (note.url) URL.revokeObjectURL(note.url);
+                    });
+                    setVoiceNotes([]);
+                  }
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-red-300"
+                disabled={isLoading}
+              >
+                <X className="w-4 h-4" />
+                Discard
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              form="ticket-form"
+              className="flex items-center gap-2 px-6 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-lg transition-colors font-medium"
+              disabled={isLoading || !formData.subject || (!formData.description || formData.description === '<p></p>')}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Create Ticket
+                </>
+              )}
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} id="ticket-form" className="p-6 space-y-6">
 
               <div className="flex items-center gap-3">
                 {!isOnline && (
@@ -550,87 +570,111 @@ const TicketCreationScreen = () => {
               </div>
             </div>
 
-            {/* Subject Field */}
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
-                Subject <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.subject || ''}
-                onChange={handleSubjectChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
-                placeholder="Brief description of your issue or request..."
-                required
-                disabled={isLoading}
-                key="subject-input"
-              />
-            </div>
+                {/* Subject Field */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Subject <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.subject || ''}
+                      onChange={handleSubjectChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Brief description of your issue or request..."
+                      required
+                      disabled={isLoading}
+                    />
+                  </div>
 
-            {/* Metadata Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">Priority</label>
-                <select
-                  value={formData.priority}
-                  onChange={handlePriorityChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm transition-all duration-200"
-                  disabled={isLoading}
-                >
-                  <option value="Low">🟢 Low</option>
-                  <option value="Medium">🟡 Medium</option>
-                  <option value="High">🔴 High</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">Type</label>
-                <select
-                  value={formData.type}
-                  onChange={handleTypeChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm transition-all duration-200"
-                  disabled={isLoading}
-                >
-                  <option value="Question">❓ Question</option>
-                  <option value="Incident">🚨 Incident</option>
-                  <option value="Problem">🔧 Problem</option>
-                  <option value="Feature Request">💡 Feature Request</option>
-                  <option value="Unspecified">📝 Unspecified</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">Status</label>
-                <select
-                  value={formData.status}
-                  onChange={handleStatusChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm transition-all duration-200"
-                  disabled={isLoading}
-                >
-                  <option value="Open">🔓 Open</option>
-                  <option value="Replied">💬 Replied</option>
-                  <option value="Closed">🔒 Closed</option>
-                </select>
-              </div>
-            </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Type <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={formData.type}
+                      onChange={handleTypeChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      disabled={isLoading}
+                    >
+                      <option value="Question">Question</option>
+                      <option value="Incident">Incident</option>
+                      <option value="Problem">Problem</option>
+                      <option value="Feature Request">Feature Request</option>
+                      <option value="Unspecified">Unspecified</option>
+                    </select>
+                  </div>
+                </div>
 
-            {/* Voice Notes Section - Moved Before Description */}
-            <div className="space-y-2 border-t border-gray-200 pt-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
-                  🎙️ Voice Notes
-                  {voiceNotes.length > 0 && (
-                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                      {voiceNotes.length}
-                    </span>
-                  )}
-                </h3>
-                <button
-                  type="button"
-                  onClick={isRecording ? stopRecording : startRecording}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all duration-200 ${
-                    isRecording
-                      ? 'bg-red-500 text-white hover:bg-red-600'
-                      : 'bg-blue-500 text-white hover:bg-blue-600'
-                  }`}
+                {/* Priority and Status Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Priority <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={formData.priority}
+                      onChange={handlePriorityChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      disabled={isLoading}
+                    >
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <select
+                      value={formData.status}
+                      onChange={handleStatusChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      disabled={isLoading}
+                    >
+                      <option value="Open">Open</option>
+                      <option value="Replied">Replied</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* User Identifier */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">User Identifier</label>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      {formData.userIdentifier ? formData.userIdentifier.charAt(0).toUpperCase() : 'A'}
+                    </div>
+                    <input
+                      type="text"
+                      value={formData.userIdentifier}
+                      onChange={handleUserIdentifierChange}
+                      className="flex-1 bg-transparent border-none outline-none placeholder-gray-500"
+                      placeholder="Enter email, username, or user ID..."
+                      disabled={isLoading}
+                    />
+                  </div>
+                </div>
+
+                {/* Voice Notes Section */}
+                <div className="border-t border-gray-200 pt-6">
+                  <h3 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                    🎙️ Voice Notes
+                    {voiceNotes.length > 0 && (
+                      <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                        {voiceNotes.length}
+                      </span>
+                    )}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={isRecording ? stopRecording : startRecording}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                      isRecording
+                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
+                    }`}
                   disabled={isLoading}
                 >
                   {isRecording ? (
