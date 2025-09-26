@@ -334,7 +334,7 @@ const HelpdeskSystem = () => {
     fetchTickets();
 
     // Listen for immediate ticket creation events via event bus
-    const unsubscribeTicketCreated = eventBus.on('ticket_created', (ticketData) => {
+    const unsubscribeTicketCreated = eventBus.on('ticket_created', (ticketData: any) => {
       console.log('🎯 Event bus: Ticket created event received:', ticketData);
 
       // Immediately add to state for instant UI update
@@ -376,8 +376,8 @@ const HelpdeskSystem = () => {
         // Refresh notifications
         setTimeout(() => {
           // Trigger notification refresh if notification context is available
-          if (window.refreshNotifications) {
-            window.refreshNotifications();
+          if ((window as any).refreshNotifications) {
+            (window as any).refreshNotifications();
           }
         }, 100);
       })
@@ -386,7 +386,7 @@ const HelpdeskSystem = () => {
         (payload) => {
           console.log('🎫 New ticket created:', payload.new);
           // Immediately add the new ticket to the state for instant UI update
-          const newTicket = payload.new;
+          const newTicket = payload.new as any;
           setTickets(prevTickets => [newTicket, ...prevTickets]);
           // Also refresh to ensure we have the complete data with relationships
           setTimeout(() => {
@@ -1446,7 +1446,7 @@ const HelpdeskSystem = () => {
       <div className="text-center py-12">
         <Bell className="w-16 h-16 text-slate-400 mx-auto mb-4" />
         <h3 className="text-xl font-semibold text-slate-900 mb-2">No Notifications</h3>
-        <p className="text-slate-600">You're all caught up!</p>
+        <p className="text-slate-600">You&apos;re all caught up!</p>
       </div>
     </ViewWrapper>
   );

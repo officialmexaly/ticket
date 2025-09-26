@@ -263,7 +263,7 @@ export default function HelpPage() {
     <div className="space-y-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Get in Touch</h2>
-        <p className="text-gray-600">Can't find what you're looking for? Our support team is here to help.</p>
+        <p className="text-gray-600">Can&apos;t find what you&apos;re looking for? Our support team is here to help.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

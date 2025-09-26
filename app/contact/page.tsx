@@ -115,7 +115,7 @@ export default function ContactPage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h2>
           <p className="text-gray-600 mb-4">
-            Thank you for contacting us. We'll get back to you within 24 hours.
+            Thank you for contacting us. We&apos;ll get back to you within 24 hours.
           </p>
           <div className="text-sm text-gray-500">
             Redirecting back to form...
@@ -288,7 +288,7 @@ export default function ContactPage() {
                       <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-3 italic">"{testimonial.text}"</p>
+                  <p className="text-gray-700 mb-3 italic">&quot;{testimonial.text}&quot;</p>
                   <div>
                     <p className="font-semibold text-gray-900">{testimonial.name}</p>
                     <p className="text-sm text-gray-600">{testimonial.company}</p>

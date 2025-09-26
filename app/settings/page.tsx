@@ -107,16 +107,16 @@ export default function SettingsPage() {
         <div className="flex items-center gap-6 mb-6">
           <div className="relative">
             <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-              {user?.email?.[0]?.toUpperCase() || 'U'}
+              {'U'}
             </div>
             <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
               <Camera className="w-4 h-4" />
             </button>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-gray-900">{settings.full_name || user?.email}</h4>
-            <p className="text-gray-600">{user?.email}</p>
-            <p className="text-sm text-gray-500">Member since {new Date(user?.created_at || '').toLocaleDateString()}</p>
+            <h4 className="text-lg font-semibold text-gray-900">{settings.full_name || 'User'}</h4>
+            <p className="text-gray-600">user@example.com</p>
+            <p className="text-sm text-gray-500">Member since {new Date().toLocaleDateString()}</p>
           </div>
         </div>
 
@@ -141,7 +141,7 @@ export default function SettingsPage() {
               <Mail className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="email"
-                value={user?.email || ''}
+                value={'user@example.com'}
                 disabled
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
               />
