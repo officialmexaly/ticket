@@ -404,21 +404,21 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
         </div>
       )}
 
-      {/* Header */}
-      <div className="sticky top-0 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-sm z-10">
-        <div className="max-w-7xl mx-auto px-8">
+      {/* Enhanced Header */}
+      <div className="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-10">
+        <div className="max-w-6xl mx-auto px-6">
           {/* Top Navigation Bar */}
           <div className="flex items-center justify-between py-4">
-            <div className="flex items-center space-x-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 via-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/25 ring-1 ring-white/20">
-                <div className="w-6 h-4 bg-white rounded-sm transform -skew-x-12"></div>
+            <div className="flex items-center space-x-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-4 h-3 bg-white rounded-sm transform -skew-x-12"></div>
               </div>
-              <div className="flex items-center text-sm text-slate-500 space-x-2 font-medium">
-                <span className="hover:text-slate-700 cursor-pointer">Support</span>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-                <span className="hover:text-slate-700 cursor-pointer">Tickets</span>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-                <span className="text-slate-900 font-semibold">{isEditMode ? 'Edit Ticket' : 'Create New Ticket'}</span>
+              <div className="flex items-center text-sm text-gray-500 space-x-2">
+                <button onClick={onCancel} className="hover:text-gray-700 cursor-pointer">Support</button>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+                <button onClick={onCancel} className="hover:text-gray-700 cursor-pointer">Tickets</button>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+                <span className="text-gray-900 font-medium">{isEditMode ? 'Edit Ticket' : 'Create New Ticket'}</span>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -482,30 +482,36 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-8 py-8 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto px-6 py-6 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Column - Enhanced Form Fields */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Primary Details Card */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl border border-slate-200/60 shadow-2xl shadow-slate-900/5 overflow-hidden">
-              <div className="px-8 py-6 bg-gradient-to-r from-slate-50/80 to-white/90 border-b border-slate-200/60">
-                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  Ticket Details
-                </h3>
+          <div className="lg:col-span-3 space-y-6">
+            {/* Form Card */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">
+                    T
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-bold text-gray-900">{isEditMode ? 'Edit Ticket' : 'Create New Ticket'}</h1>
+                    <p className="text-sm text-gray-600">Provide details about your request or issue</p>
+                  </div>
+                </div>
               </div>
 
-              <form onSubmit={handleSubmit} id="ticket-form" className="p-8 space-y-6">
+
+              <form onSubmit={handleSubmit} id="ticket-form" className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Subject <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       value={formData.subject}
                       onChange={handleSubjectChange}
-                      className="w-full px-4 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-200 font-medium"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       placeholder="Brief description of your issue or request..."
                       required
                       disabled={isLoading}
@@ -513,13 +519,13 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Type <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.type}
                       onChange={handleTypeChange}
-                      className="w-full px-4 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-200 font-medium"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       disabled={isLoading}
                     >
                       <option value="Question">Question</option>
@@ -531,15 +537,15 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Priority <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.priority}
                       onChange={handlePriorityChange}
-                      className="w-full px-4 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-200 font-medium"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       disabled={isLoading}
                     >
                       <option value="Low">Low</option>
