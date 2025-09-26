@@ -303,7 +303,7 @@ export default function ContactPage() {
             <h3 className="text-xl font-bold mb-4">Why Choose Our Support?</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold">< 2h</div>
+                <div className="text-2xl font-bold">&lt; 2h</div>
                 <div className="text-sm text-blue-100">Average Response</div>
               </div>
               <div className="text-center">
