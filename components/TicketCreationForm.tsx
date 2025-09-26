@@ -389,7 +389,7 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
           color: #1d4ed8;
         }
       `}</style>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50/30">
+      <div className="min-h-screen max-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50/30 overflow-y-auto">
       {/* Notifications */}
       {error && (
         <div className="fixed top-4 right-4 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-md">
@@ -482,7 +482,7 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-8 py-8">
+      <div className="max-w-7xl mx-auto px-8 py-8 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Enhanced Form Fields */}
           <div className="lg:col-span-2 space-y-8">
