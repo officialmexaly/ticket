@@ -19,6 +19,7 @@ const TicketCreationScreen = () => {
   }));
 
   const [isRecording, setIsRecording] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [voiceNotes, setVoiceNotes] = useState([]);
   const [playingNote, setPlayingNote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -150,10 +151,25 @@ const TicketCreationScreen = () => {
     }
   };
 
+  const pauseRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      mediaRecorderRef.current.pause();
+      setIsPaused(true);
+    }
+  };
+
+  const resumeRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused') {
+      mediaRecorderRef.current.resume();
+      setIsPaused(false);
+    }
+  };
+
   const stopRecording = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
+      setIsPaused(false);
     }
   };
 
@@ -568,9 +584,8 @@ const TicketCreationScreen = () => {
                   )}
                 </button>
               </div>
-            </div>
 
-                {/* Subject Field */}
+              {/* Subject Field */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -659,42 +674,69 @@ const TicketCreationScreen = () => {
 
                 {/* Voice Notes Section */}
                 <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                    🎙️ Voice Notes
-                    {voiceNotes.length > 0 && (
-                      <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                        {voiceNotes.length}
-                      </span>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      🎙️ Voice Notes
+                      {voiceNotes.length > 0 && (
+                        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                          {voiceNotes.length}
+                        </span>
+                      )}
+                    </h3>
+
+                    {!isRecording ? (
+                      <button
+                        type="button"
+                        onClick={startRecording}
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium text-sm transition-colors"
+                        disabled={isLoading}
+                      >
+                        <Mic className="w-4 h-4" />
+                        Record
+                      </button>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={isPaused ? resumeRecording : pauseRecording}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 font-medium text-sm transition-colors"
+                          disabled={isLoading}
+                        >
+                          {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
+                          {isPaused ? 'Resume' : 'Pause'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={stopRecording}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 font-medium text-sm transition-colors"
+                          disabled={isLoading}
+                        >
+                          <Square className="w-4 h-4" />
+                          Stop
+                        </button>
+                      </div>
                     )}
-                  </h3>
-                  <button
-                    type="button"
-                    onClick={isRecording ? stopRecording : startRecording}
-                    className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                      isRecording
-                        ? 'bg-red-500 text-white hover:bg-red-600'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
-                  disabled={isLoading}
-                >
-                  {isRecording ? (
-                    <>
-                      <Square className="w-3 h-3" />
-                      Stop
-                    </>
-                  ) : (
-                    <>
-                      <Mic className="w-3 h-3" />
-                      Record
-                    </>
-                  )}
-                </button>
-              </div>
+                  </div>
+                </div>
 
               {isRecording && (
-                <div className="flex items-center gap-2 p-2 bg-red-50 border border-red-200 rounded-lg">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="text-red-700 text-sm font-medium">Recording...</span>
+                <div className={`flex items-center gap-2 p-2 rounded-lg border ${
+                  isPaused
+                    ? 'bg-yellow-50 border-yellow-200'
+                    : 'bg-red-50 border-red-200'
+                }`}>
+                  <div className={`w-2 h-2 rounded-full ${
+                    isPaused
+                      ? 'bg-yellow-500'
+                      : 'bg-red-500 animate-pulse'
+                  }`}></div>
+                  <span className={`text-sm font-medium ${
+                    isPaused
+                      ? 'text-yellow-700'
+                      : 'text-red-700'
+                  }`}>
+                    {isPaused ? 'Recording paused...' : 'Recording...'}
+                  </span>
                 </div>
               )}
 
@@ -740,7 +782,6 @@ const TicketCreationScreen = () => {
                   ))}
                 </div>
               )}
-            </div>
 
             {/* Description Field */}
             <div className="space-y-2">
