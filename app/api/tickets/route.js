@@ -28,7 +28,8 @@ export async function GET(request) {
       .from('tickets')
       .select(`
         *,
-        voice_notes (*)
+        voice_notes (*),
+        attachments (*)
       `)
       .order('created_at', { ascending: false })
 
@@ -66,6 +67,7 @@ export async function POST(request) {
     const contentType = request.headers.get('content-type')
     let ticketData
     let voiceNotes = []
+    let attachments = []
 
     if (contentType?.includes('application/json')) {
       // Handle JSON requests
@@ -91,11 +93,14 @@ export async function POST(request) {
         user_identifier: formData.get('userIdentifier') || formData.get('user_identifier')
       }
 
-      // Process voice notes
+      // Process voice notes and attachments
       for (const [key, value] of formData.entries()) {
         if (key.startsWith('voice_note_') && value instanceof File) {
           // We'll process these after creating the ticket
           voiceNotes.push({ key, file: value })
+        } else if (key.startsWith('attachment_') && value instanceof File) {
+          // We'll process these after creating the ticket
+          attachments.push({ key, file: value })
         }
       }
     }
@@ -116,7 +121,8 @@ export async function POST(request) {
       .insert(ticketData)
       .select(`
         *,
-        voice_notes (*)
+        voice_notes (*),
+        attachments (*)
       `)
       .single()
 
@@ -202,13 +208,49 @@ export async function POST(request) {
       }
     }
 
+    // Handle attachments if present
+    const processedAttachments = []
+    for (const attachment of attachments) {
+      try {
+        // Read file as buffer
+        const fileBuffer = await attachment.file.arrayBuffer()
+        const fileData = Buffer.from(fileBuffer)
+
+        // Save attachment record directly to database
+        const { data: savedAttachment, error: attachmentError } = await supabase
+          .from('attachments')
+          .insert({
+            ticket_id: ticket.id,
+            original_name: attachment.file.name,
+            file_size: attachment.file.size,
+            mime_type: attachment.file.type,
+            file_data: fileData,
+            user_identifier: ticket.user_identifier
+          })
+          .select()
+          .single()
+
+        if (!attachmentError) {
+          processedAttachments.push(savedAttachment)
+        } else {
+          console.error('Attachment save error:', attachmentError)
+        }
+      } catch (error) {
+        console.error('Error processing attachment:', error)
+      }
+    }
+
     // Create a response with the ticket data
-    const responseData = { ...ticket, voice_notes: processedVoiceNotes }
+    const responseData = {
+      ...ticket,
+      voice_notes: processedVoiceNotes,
+      attachments: processedAttachments
+    }
 
     // Create the response with custom headers to trigger immediate updates
     const response = NextResponse.json(responseData)
     response.headers.set('X-Trigger-Update', 'ticket_created')
-    response.headers.set('X-Ticket-Data', JSON.stringify(responseData))
+    // Note: Removed X-Ticket-Data header to avoid ByteString conversion errors with Unicode characters
 
     return response
   } catch (error) {

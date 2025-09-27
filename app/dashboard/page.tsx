@@ -23,6 +23,15 @@ interface VoiceNoteData {
   created_at: string;
 }
 
+interface AttachmentData {
+  id: string;
+  original_name: string;
+  file_size: number;
+  mime_type: string;
+  user_identifier: string;
+  created_at: string;
+}
+
 interface TicketData {
   id: string;
   subject: string;
@@ -34,6 +43,7 @@ interface TicketData {
   created_at: string;
   updated_at: string;
   voice_notes: VoiceNoteData[];
+  attachments: AttachmentData[];
 }
 
 interface DraftData {
@@ -141,16 +151,21 @@ const HelpdeskSystem = () => {
         .from('tickets')
         .select(`
           *,
-          voice_notes (*)
+          voice_notes (*),
+          attachments (*)
         `)
         .order('created_at', { ascending: false });
 
+      console.log('Supabase query error:', error);
       if (error) {
         console.error('Supabase error:', error);
         throw error;
       }
 
       console.log('Fetched tickets:', data?.length || 0);
+      console.log('Full ticket data:', data);
+      console.log('First ticket attachments:', data?.[0]?.attachments);
+      console.log('First ticket voice_notes:', data?.[0]?.voice_notes);
       setTickets(data || []);
     } catch (err) {
       console.error('Failed to fetch tickets:', err);
@@ -1155,7 +1170,8 @@ const HelpdeskSystem = () => {
         duration: note.duration || 60,
         size: 1024, // Default size
         timestamp: note.created_at
-      })) || []
+      })) || [],
+      attachments: selectedTicket.attachments || []
     };
 
     return (

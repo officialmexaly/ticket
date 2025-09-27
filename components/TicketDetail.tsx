@@ -14,6 +14,15 @@ interface VoiceNoteData {
   timestamp: string;
 }
 
+interface AttachmentData {
+  id: string;
+  original_name: string;
+  file_size: number;
+  mime_type: string;
+  user_identifier: string;
+  created_at: string;
+}
+
 interface TicketData {
   id: number;
   uuid: string;
@@ -26,6 +35,7 @@ interface TicketData {
   created_at: string;
   updated_at: string;
   voice_notes: VoiceNoteData[];
+  attachments: AttachmentData[];
 }
 
 interface TicketDetailProps {
@@ -303,6 +313,72 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
               />
             ) : (
               <div className="prose prose-slate max-w-none">
+                <style jsx>{`
+                  .text-slate-700 p[style*="text-align: left"],
+                  .text-slate-700 h1[style*="text-align: left"],
+                  .text-slate-700 h2[style*="text-align: left"],
+                  .text-slate-700 h3[style*="text-align: left"] {
+                    text-align: left;
+                  }
+                  .text-slate-700 p[style*="text-align: center"],
+                  .text-slate-700 h1[style*="text-align: center"],
+                  .text-slate-700 h2[style*="text-align: center"],
+                  .text-slate-700 h3[style*="text-align: center"] {
+                    text-align: center;
+                  }
+                  .text-slate-700 p[style*="text-align: right"],
+                  .text-slate-700 h1[style*="text-align: right"],
+                  .text-slate-700 h2[style*="text-align: right"],
+                  .text-slate-700 h3[style*="text-align: right"] {
+                    text-align: right;
+                  }
+                  .text-slate-700 p[style*="text-align: justify"],
+                  .text-slate-700 h1[style*="text-align: justify"],
+                  .text-slate-700 h2[style*="text-align: justify"],
+                  .text-slate-700 h3[style*="text-align: justify"] {
+                    text-align: justify;
+                  }
+                  .text-slate-700 h1 {
+                    font-size: 2rem;
+                    font-weight: bold;
+                    margin: 1rem 0 0.5rem 0;
+                    line-height: 1.2;
+                    color: #1e293b;
+                  }
+                  .text-slate-700 h2 {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    margin: 0.875rem 0 0.375rem 0;
+                    line-height: 1.3;
+                    color: #334155;
+                  }
+                  .text-slate-700 h3 {
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                    margin: 0.75rem 0 0.25rem 0;
+                    line-height: 1.4;
+                    color: #475569;
+                  }
+                  .text-slate-700 ul {
+                    list-style-type: disc;
+                    margin-left: 1.5rem;
+                    padding-left: 0.5rem;
+                  }
+                  .text-slate-700 ol {
+                    list-style-type: decimal;
+                    margin-left: 1.5rem;
+                    padding-left: 0.5rem;
+                  }
+                  .text-slate-700 li {
+                    margin: 0.25rem 0;
+                  }
+                  .text-slate-700 ul ul, .text-slate-700 ol ul {
+                    list-style-type: circle;
+                  }
+                  .text-slate-700 ul ul ul, .text-slate-700 ol ul ul {
+                    list-style-type: square;
+                  }
+                `}</style>
                 <div
                   className="text-slate-700 leading-relaxed"
                   dangerouslySetInnerHTML={{
@@ -442,7 +518,10 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
     </div>
   );
 
-  const renderAttachmentsContent = () => (
+  const renderAttachmentsContent = () => {
+    console.log('TicketDetail - selectedTicket:', selectedTicket);
+    console.log('TicketDetail - attachments:', selectedTicket?.attachments);
+    return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border border-slate-200/60 shadow-2xl shadow-slate-900/5 overflow-hidden">
       <div className="px-8 py-6 bg-gradient-to-r from-slate-50/80 to-white/90 border-b border-slate-200/60">
         <h3 className="text-lg font-bold text-slate-900 flex items-center gap-3">
@@ -450,14 +529,48 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
           Attachments
         </h3>
       </div>
-      <div className="p-8 text-center">
-        <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <div className="text-2xl">📎</div>
-        </div>
-        <p className="text-slate-500">No attachments found for this ticket.</p>
+      <div className="p-8">
+        {selectedTicket.attachments && selectedTicket.attachments.length > 0 ? (
+          <div className="space-y-4">
+            {selectedTicket.attachments.map((attachment, index) => (
+              <div key={attachment.id} className="bg-slate-50/50 p-6 rounded-2xl border border-slate-200/50">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-indigo-500 rounded-2xl flex items-center justify-center text-white text-lg font-bold">
+                    {index + 1}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-sm font-semibold text-slate-900 mb-1">{attachment.original_name}</h4>
+                    <div className="flex items-center gap-4 text-xs text-slate-500">
+                      <span>{attachment.mime_type}</span>
+                      <span>•</span>
+                      <span>{(attachment.file_size / 1024).toFixed(1)} KB</span>
+                      <span>•</span>
+                      <span>{new Date(attachment.created_at).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <a
+                    href={`/api/attachments/${attachment.id}`}
+                    download={attachment.original_name}
+                    className="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors text-sm font-medium"
+                  >
+                    Download
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center">
+            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="text-2xl">📎</div>
+            </div>
+            <p className="text-slate-500">No attachments found for this ticket.</p>
+          </div>
+        )}
       </div>
     </div>
-  );
+    );
+  };
 
   const renderVoiceNotesContent = () => (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border border-slate-200/60 shadow-2xl shadow-slate-900/5 overflow-hidden">

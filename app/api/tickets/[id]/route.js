@@ -23,7 +23,8 @@ export async function GET(request, { params }) {
       .from('tickets')
       .select(`
         *,
-        voice_notes (*)
+        voice_notes (*),
+        attachments (*)
       `)
       .eq('id', id)
       .single()
@@ -70,7 +71,8 @@ export async function PUT(request, { params }) {
       .eq('id', id)
       .select(`
         *,
-        voice_notes (*)
+        voice_notes (*),
+        attachments (*)
       `)
       .single()
 
@@ -93,10 +95,10 @@ export async function DELETE(request, { params }) {
   try {
     const { id } = await params
 
-    // First, get the ticket to access voice notes - same pattern as other operations
+    // First, get the ticket to access voice notes and attachments - same pattern as other operations
     const { data: ticket, error: fetchError } = await supabase
       .from('tickets')
-      .select('voice_notes (*)')
+      .select('voice_notes (*), attachments (*)')
       .eq('id', id)
       .single()
 
@@ -123,7 +125,10 @@ export async function DELETE(request, { params }) {
       }
     }
 
-    // Delete the ticket (cascade will handle voice_notes table)
+    // Attachments are stored directly in database, no separate file cleanup needed
+    // They will be deleted automatically via CASCADE when the ticket is deleted
+
+    // Delete the ticket (cascade will handle voice_notes and attachments tables)
     const { error: deleteError } = await supabase
       .from('tickets')
       .delete()
