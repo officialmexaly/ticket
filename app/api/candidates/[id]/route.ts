@@ -1,7 +1,36 @@
 import { NextResponse } from 'next/server';
 
+interface Candidate {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  skills: string[];
+  experience_years: number;
+  current_company?: string;
+  current_position?: string;
+  location?: string;
+  source?: string;
+  stage?: string;
+  salary_expectation?: number;
+  availability?: string;
+  rating?: number;
+  notes?: string;
+  applied_posting_id?: string;
+  assigned_company?: {
+    id: string;
+    name: string;
+    department: string;
+  };
+  interview_status?: string;
+  interview_date?: string;
+  interview_stage?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 // This would typically connect to your database
-const candidates = [
+const candidates: Candidate[] = [
   {
     id: '1',
     name: 'John Smith',
