@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Check, X, Trash2, Settings, Volume2, VolumeX } from 'lucide-react';
+import { Bell, Check, X, Trash2, Volume2, VolumeX } from 'lucide-react';
 import { useNotifications } from '@/lib/notification-context';
 
 const NotificationBell: React.FC = () => {

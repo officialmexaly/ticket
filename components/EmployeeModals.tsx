@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, UserPlus, Building, Briefcase, Calendar, DollarSign, Phone, Mail, MapPin, AlertCircle } from 'lucide-react';
+import { X, UserPlus, Building, Briefcase, DollarSign } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -58,13 +58,6 @@ interface DepartmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   department?: Department | null;
-  onSuccess: () => void;
-}
-
-interface PositionModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  position?: Position | null;
   onSuccess: () => void;
 }
 

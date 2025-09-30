@@ -12,17 +12,11 @@ import {
   Ticket,
   Clock,
   User,
-  AlertTriangle,
-  CheckCircle,
-  Calendar,
   MessageSquare,
   Paperclip,
-  Star,
   Eye,
-  Edit,
-  Trash2
+  Edit
 } from 'lucide-react';
-import { useTheme } from '@/lib/theme-context';
 
 interface EnhancedTicketViewProps {
   setCurrentView: (view: string) => void;

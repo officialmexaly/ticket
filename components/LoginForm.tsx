@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
     try {
       setIsLoading(true);
       await signIn(email, password);
-    } catch (error) {
+    } catch {
       // Error handling is done in the auth context
     } finally {
       setIsLoading(false);
@@ -43,7 +43,7 @@ const LoginForm: React.FC = () => {
     try {
       await resetPassword(email);
       setShowResetPassword(false);
-    } catch (error) {
+    } catch {
       // Error handling is done in the auth context
     }
   };

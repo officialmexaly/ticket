@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { clearSupabaseAuth } from '../lib/clear-auth';
 import Link from 'next/link';
 import {
@@ -25,11 +24,9 @@ import {
 } from 'lucide-react';
 
 const LandingPage = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set());
 
   useEffect(() => {
-    setIsVisible(true);
     // Clear any leftover auth data on page load
     clearSupabaseAuth();
 

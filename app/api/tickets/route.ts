@@ -173,7 +173,7 @@ export async function POST(request: Request) {
       try {
         // Upload to Supabase Storage
         const fileName = `${ticket.id}/${Date.now()}-${voiceNote.key}.wav`
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('voice-notes')
           .upload(fileName, voiceNote.file, {
             contentType: 'audio/wav'

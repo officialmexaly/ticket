@@ -33,7 +33,6 @@ import {
   Folder,
   FolderOpen,
   Plus,
-  Edit2,
   Trash2,
   Check,
   X,
@@ -45,7 +44,6 @@ import { Input } from '@/components/ui/input';
 
 interface DraggableSidebarProps {
   sidebarCollapsed: boolean;
-  setSidebarCollapsed: (collapsed: boolean) => void;
   currentView: string;
   setCurrentView: (view: string) => void;
   isMobile?: boolean;
@@ -67,7 +65,6 @@ interface MenuItem {
 
 const DraggableSidebar: React.FC<DraggableSidebarProps> = ({
   sidebarCollapsed,
-  setSidebarCollapsed,
   currentView,
   setCurrentView,
   isMobile = false,
@@ -323,11 +320,10 @@ const DraggableSidebar: React.FC<DraggableSidebarProps> = ({
     }
   };
 
-  const renderMenuItem = (item: MenuItem, index: number, isChild = false, parentId?: string) => {
+  const renderMenuItem = (item: MenuItem, index: number, isChild = false) => {
     const isActive = currentView === item.view;
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedSections.includes(item.id);
-    const droppableId = isChild ? `group-${parentId}` : 'sidebar-main';
 
     return (
       <Draggable key={item.id} draggableId={item.id} index={index}>

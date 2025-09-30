@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { ChevronLeft, Edit3, Save, X, Trash2, ChevronRight, Target, CheckSquare, Users, Star } from 'lucide-react';
+import { ChevronLeft, Edit3, Save, X, ChevronRight, Target, CheckSquare, Star } from 'lucide-react';
 
 interface FeatureData {
   id: string;
@@ -51,7 +51,6 @@ interface FeatureDetailProps {
   onBack: () => void;
   onEdit: () => void;
   onSave: (featureId: string, data: Partial<FeatureData>) => void;
-  onDelete: (featureId: string) => void;
   onCancel: () => void;
   formatDate: (date: string) => string;
 }
@@ -63,7 +62,6 @@ const FeatureDetail: React.FC<FeatureDetailProps> = ({
   onBack,
   onEdit,
   onSave,
-  onDelete,
   onCancel,
   formatDate
 }) => {

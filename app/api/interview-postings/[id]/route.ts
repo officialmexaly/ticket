@@ -83,7 +83,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       data: updatedPosting,
       message: 'Interview posting updated successfully'
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       success: false,
       error: 'Failed to update interview posting'
@@ -110,7 +110,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       success: true,
       message: 'Interview posting deleted successfully'
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       success: false,
       error: 'Failed to delete interview posting'

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { ChevronLeft, Edit3, Save, X, Trash2, ChevronDown, ChevronRight, Lightbulb, Target, Users, Calendar, DollarSign } from 'lucide-react';
+import { ChevronLeft, Edit3, Save, X, ChevronDown, ChevronRight, Lightbulb, Target } from 'lucide-react';
 
 interface EpicData {
   id: string;
@@ -44,7 +44,6 @@ interface EpicDetailProps {
   onBack: () => void;
   onEdit: () => void;
   onSave: (epicId: string, data: Partial<EpicData>) => void;
-  onDelete: (epicId: string) => void;
   onCancel: () => void;
   formatDate: (date: string) => string;
 }
@@ -56,7 +55,6 @@ const EpicDetail: React.FC<EpicDetailProps> = ({
   onBack,
   onEdit,
   onSave,
-  onDelete,
   onCancel,
   formatDate
 }) => {

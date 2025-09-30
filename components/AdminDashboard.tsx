@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { Users, Shield, Ticket, BarChart3, Eye, Edit, Trash2, UserCheck, UserX } from 'lucide-react'
+import { Users, Shield, Ticket, BarChart3, Trash2, UserCheck, UserX } from 'lucide-react'
 
 interface UserProfile {
   id: string

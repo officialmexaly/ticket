@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/lib/supabase';
 import { Trash2, Edit, Plus, X, Check, Circle } from 'lucide-react';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { Search, Bell, Tag, Users, Calendar, Activity, MessageSquare, User, Mail, ChevronLeft, Ticket, Settings, Shield, BarChart3, FileText, HelpCircle, Phone, LogOut, FolderKanban, CheckSquare, Target, Layers, UserCheck, Handshake } from 'lucide-react';

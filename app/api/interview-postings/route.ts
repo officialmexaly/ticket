@@ -124,7 +124,7 @@ export async function POST(request: Request) {
       data: newPosting,
       message: 'Interview posting created successfully'
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       success: false,
       error: 'Failed to create interview posting'

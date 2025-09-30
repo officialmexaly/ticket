@@ -14,14 +14,11 @@ import {
   Phone,
   MapPin,
   Calendar,
-  Clock,
   Building2,
-  Briefcase,
   Award,
   Activity,
   FileText,
   Download,
-  Eye,
   User
 } from 'lucide-react';
 

@@ -10,9 +10,6 @@ import {
   Target,
   Flag,
   CheckSquare,
-  BarChart3,
-  Settings,
-  Users,
   Calendar,
   Layers,
   Plus,
@@ -30,7 +27,6 @@ import {
 } from './AgileCRUDModals';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
-import { useTheme } from '@/lib/theme-context';
 
 // Types based on your existing database schema
 interface Epic {

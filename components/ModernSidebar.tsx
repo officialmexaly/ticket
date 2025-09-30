@@ -26,7 +26,6 @@ import {
   UserPlus,
   Layers,
   Zap,
-  Globe,
   CreditCard,
   Search,
   UserCheck,

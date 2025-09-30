@@ -12,16 +12,9 @@ import {
   MoreHorizontal,
   Building2,
   Users,
-  MapPin,
   DollarSign,
-  Target,
-  TrendingUp,
-  Calendar,
   Activity,
   FileText,
-  Award,
-  Briefcase,
-  Clock,
   BarChart3
 } from 'lucide-react';
 

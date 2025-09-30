@@ -19,11 +19,11 @@ interface ModernLayoutProps {
   children?: React.ReactNode;
 }
 
-const ModernLayout: React.FC<ModernLayoutProps> = ({ children }) => {
+const ModernLayout: React.FC<ModernLayoutProps> = () => {
   const [currentView, setCurrentView] = useState('home');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [notifications, setNotifications] = useState(3);
+  const [notifications] = useState(3);
   const [sidebarEditMode, setSidebarEditMode] = useState(false);
   const { user } = useAuth();
 

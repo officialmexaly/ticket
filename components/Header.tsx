@@ -15,7 +15,6 @@ interface HeaderProps {
   onCreate?: () => void;
   showCreateButton?: boolean;
   createButtonText?: string;
-  onAdminClick?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -27,10 +26,8 @@ const Header: React.FC<HeaderProps> = ({
   onAction,
   onCreate,
   showCreateButton = true,
-  createButtonText = "New ticket",
-  onAdminClick
+  createButtonText = "New ticket"
 }) => {
-  const [showViewDropdown, setShowViewDropdown] = useState(false);
   const { isDark } = useTheme();
 
   return (

@@ -14,22 +14,12 @@ import {
   MapPin,
   Mail,
   Phone,
-  Calendar,
-  Clock,
   Search,
-  Filter,
   ArrowRight,
   CheckCircle,
-  AlertCircle,
   Star,
-  Briefcase,
-  Target,
-  Eye,
   Edit2,
-  MoreHorizontal,
-  UserCheck,
-  FileText,
-  Award
+  FileText
 } from 'lucide-react';
 
 interface Company {
@@ -100,7 +90,7 @@ const CandidateAssignmentView: React.FC = () => {
       if (postingsData.success) {
         setPostings(postingsData.data);
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to fetch data');
     } finally {
       setLoading(false);
@@ -129,7 +119,7 @@ const CandidateAssignmentView: React.FC = () => {
 
       toast.success(`Candidate assigned to ${posting.company.name}`);
       setShowAssignModal(false);
-    } catch (error) {
+    } catch {
       toast.error('Failed to assign candidate');
     }
   };

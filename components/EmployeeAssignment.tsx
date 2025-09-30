@@ -11,8 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { User, UserPlus, UserMinus } from 'lucide-react';
+import { UserPlus, UserMinus } from 'lucide-react';
 import { employeeService, Employee } from '@/lib/employeeService';
 import { toast } from 'sonner';
 
