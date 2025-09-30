@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 // This would typically connect to your database
-let candidates = [
+const candidates = [
   {
     id: '1',
     name: 'John Smith',

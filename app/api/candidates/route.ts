@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-let candidates = [
+const candidates = [
   {
     id: '1',
     name: 'John Smith',

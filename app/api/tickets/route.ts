@@ -66,8 +66,8 @@ export async function POST(request) {
 
     const contentType = request.headers.get('content-type')
     let ticketData
-    let voiceNotes = []
-    let attachments = []
+    const voiceNotes = []
+    const attachments = []
 
     if (contentType?.includes('application/json')) {
       // Handle JSON requests
