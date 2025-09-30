@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Ticket, List, RefreshCw, MoreHorizontal, Plus, Grid } from 'lucide-react';
 import NotificationBell from './NotificationBell';
+import { useTheme } from '@/lib/theme-context';
 
 interface HeaderProps {
   title: string;
@@ -30,9 +31,10 @@ const Header: React.FC<HeaderProps> = ({
   onAdminClick
 }) => {
   const [showViewDropdown, setShowViewDropdown] = useState(false);
+  const { isDark } = useTheme();
 
   return (
-    <div className="px-8 py-6 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
+    <div className="px-8 py-6 backdrop-blur-xl border-b sticky top-0 z-50 bg-background/95 border-border">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
@@ -43,22 +45,27 @@ const Header: React.FC<HeaderProps> = ({
               <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white shadow-sm"></div>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">{title}</h1>
-              <p className="text-sm text-slate-500 font-medium">{subtitle}</p>
+              <h1 className="text-xl font-bold tracking-tight text-foreground">{title}</h1>
+              <p className="text-sm font-medium text-muted-foreground">{subtitle}</p>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
 
+
           {/* View Mode Toggle */}
-          <div className="flex items-center bg-slate-100 rounded-xl p-1 shadow-sm">
+          <div className="flex items-center rounded-xl p-1 shadow-sm bg-muted">
             <button
               onClick={() => onViewModeChange('table')}
               className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 ${
                 viewMode === 'table'
-                  ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                  ? (isDark
+                      ? 'bg-slate-700 text-white shadow-sm ring-1 ring-slate-600'
+                      : 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200')
+                  : (isDark
+                      ? 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white/50')
               }`}
             >
               <List className="w-4 h-4" />
@@ -68,8 +75,12 @@ const Header: React.FC<HeaderProps> = ({
               onClick={() => onViewModeChange('grid')}
               className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 ${
                 viewMode === 'grid'
-                  ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                  ? (isDark
+                      ? 'bg-slate-700 text-white shadow-sm ring-1 ring-slate-600'
+                      : 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200')
+                  : (isDark
+                      ? 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white/50')
               }`}
             >
               <Grid className="w-4 h-4" />
@@ -86,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={onRefresh}
-              className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md border border-transparent hover:border-slate-200"
+              className="relative p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-xl transition-all duration-200 shadow-sm hover:shadow-md border border-transparent hover:border-border"
               title="Refresh"
             >
               <RefreshCw className="w-4 h-4" />
@@ -94,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={onAction}
-              className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md border border-transparent hover:border-slate-200"
+              className="relative p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-xl transition-all duration-200 shadow-sm hover:shadow-md border border-transparent hover:border-border"
               title="More actions"
             >
               <MoreHorizontal className="w-4 h-4" />

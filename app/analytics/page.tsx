@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
-import { BarChart3, TrendingUp, TrendingDown, Clock, CheckCircle, AlertCircle, Users, Ticket } from 'lucide-react'
+import { TrendingUp, TrendingDown, Clock, CheckCircle, AlertCircle, Ticket } from 'lucide-react'
 
 interface AnalyticsData {
   totalTickets: number

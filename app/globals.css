@@ -1,28 +1,46 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #000000;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 /* Ensure proper input behavior */
@@ -64,4 +82,255 @@ html {
   background: white;
   border-radius: 10px;
   z-index: -1;
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  /* Main backgrounds - Professional dark with rich depth */
+  --background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0d1117 100%);
+  --foreground: #ffffff;
+
+  /* Cards and surfaces - Elevated professional surfaces */
+  --card: #1e2532;
+  --card-foreground: #ffffff;
+  --popover: #1e2532;
+  --popover-foreground: #ffffff;
+
+  /* Primary colors - Professional vibrant blue */
+  --primary: oklch(0.65 0.25 250);
+  --primary-foreground: oklch(1 0 240);
+
+  /* Secondary surfaces - Rich mid-tone */
+  --secondary: #242b3a;
+  --secondary-foreground: #ffffff;
+
+  /* Muted colors - Enhanced contrast for better readability */
+  --muted: #2a3142;
+  --muted-foreground: #e0e6ed;
+
+  /* Accent colors - Professional highlight */
+  --accent: #242b3a;
+  --accent-foreground: #ffffff;
+
+  /* System colors - Professional red with excellent contrast */
+  --destructive: oklch(0.68 0.28 25);
+  --destructive-foreground: oklch(1 0 240);
+
+  /* Borders and inputs - Enhanced definition */
+  --border: #3a4354;
+  --input: #1e2532;
+  --ring: #4a90e2;
+
+  /* Chart colors - Professional and vibrant with better contrast */
+  --chart-1: oklch(0.70 0.25 250);
+  --chart-2: oklch(0.70 0.22 180);
+  --chart-3: oklch(0.70 0.22 120);
+  --chart-4: oklch(0.70 0.25 300);
+  --chart-5: oklch(0.70 0.22 60);
+
+  /* Sidebar - Professional navigation with enhanced contrast */
+  --sidebar: #141a24;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #4a90e2;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #242b3a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #3a4354;
+  --sidebar-ring: #4a90e2;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Dark theme enhancements */
+.dark {
+  color-scheme: dark;
+}
+
+/* Enhanced dark theme shadows and effects - Softer shadows */
+.dark .shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.dark .shadow {
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+}
+
+.dark .shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -4px rgba(0, 0, 0, 0.25);
+}
+
+/* Dark theme scrollbars - Softer colors */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: oklch(0.18 0.01 250);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(0.28 0.01 250);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.35 0.015 250);
+}
+
+/* Dark theme selections - Softer selection color */
+.dark ::selection {
+  background: oklch(0.58 0.15 240 / 0.25);
+  color: oklch(0.92 0.005 250);
+}
+
+/* Dark theme focus indicators - Gentler focus ring */
+.dark *:focus-visible {
+  outline: 2px solid oklch(0.58 0.15 240);
+  outline-offset: 2px;
+}
+
+/* Dark theme enhanced contrast for important elements */
+.dark h1, .dark h2, .dark h3 {
+  color: oklch(0.98 0.002 250);
+  font-weight: 600;
+}
+
+/* Enhanced text contrast for better readability */
+.dark p, .dark span, .dark div {
+  color: #ffffff;
+}
+
+/* Ensure high contrast for all text elements */
+.dark * {
+  color: inherit;
+}
+
+/* Kanban columns and cards */
+.dark .kanban-column {
+  background: #1e2532 !important;
+  border: 1px solid #3a4354 !important;
+}
+
+.dark .kanban-card {
+  background: #242b3a !important;
+  color: #ffffff !important;
+  border: 1px solid #3a4354 !important;
+}
+
+/* Professional button styling */
+.dark button {
+  transition: all 0.2s ease-in-out;
+}
+
+.dark button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px oklch(0 0 0 / 0.15);
+}
+
+/* Dark theme subtle gradients for depth - Softer gradients */
+.dark .gradient-bg {
+  background: linear-gradient(135deg, oklch(0.18 0.01 250) 0%, oklch(0.16 0.012 255) 100%);
+}
+
+/* Dark theme enhanced borders for better definition */
+.dark .border {
+  border-color: oklch(0.28 0.01 250);
+}
+
+/* Dark theme glass effect for elevated surfaces */
+.dark .glass {
+  background: oklch(0.18 0.01 250 / 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(0.28 0.01 250 / 0.5);
+}
+
+/* Dark theme improved input focus - Softer focus effects */
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: oklch(0.65 0.25 250);
+  box-shadow: 0 0 0 3px oklch(0.65 0.25 250 / 0.12);
+  background: oklch(0.12 0.008 240);
+}
+
+/* Modern card styling with subtle animations */
+.dark .card, .dark [data-card] {
+  background: oklch(0.12 0.008 240);
+  border: 1px solid oklch(0.25 0.008 240);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.dark .card:hover, .dark [data-card]:hover {
+  box-shadow: 0 4px 12px oklch(0 0 0 / 0.15);
+  transform: translateY(-1px);
+  border-color: oklch(0.30 0.01 240);
+}
+
+/* Professional navigation styling */
+.dark nav, .dark [role="navigation"] {
+  background: oklch(0.10 0.005 240);
+  border-right: 1px solid oklch(0.22 0.008 240);
+}
+
+/* Enhanced table styling for dark mode */
+.dark table {
+  background: oklch(0.12 0.008 240);
+}
+
+.dark th {
+  background: oklch(0.15 0.01 240);
+  color: oklch(0.98 0.001 240);
+  font-weight: 600;
+}
+
+.dark td {
+  border-color: oklch(0.20 0.005 240);
+  color: oklch(0.92 0.003 240);
+}
+
+.dark tr:hover {
+  background: oklch(0.16 0.008 240);
 }

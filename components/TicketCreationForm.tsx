@@ -128,6 +128,8 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
     setFormData(prev => ({ ...prev, userIdentifier: value }));
   }, []);
 
+
+
   // TipTap Editor Setup
   const editor = useEditor({
     extensions: [
@@ -569,6 +571,7 @@ const TicketCreationForm: React.FC<TicketCreationFormProps> = ({
                       <option value="Closed">Closed</option>
                     </select>
                   </div>
+
                 </div>
 
                 <div>

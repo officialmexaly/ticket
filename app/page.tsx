@@ -6,7 +6,6 @@ import { clearSupabaseAuth } from '../lib/clear-auth';
 import Link from 'next/link';
 import {
   ArrowRight,
-  CheckCircle,
   MessageSquare,
   Users,
   BarChart3,
