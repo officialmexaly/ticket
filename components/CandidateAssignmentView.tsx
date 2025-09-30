@@ -19,7 +19,9 @@ import {
   CheckCircle,
   Star,
   Edit2,
-  FileText
+  FileText,
+  Calendar,
+  Eye
 } from 'lucide-react';
 
 interface Company {

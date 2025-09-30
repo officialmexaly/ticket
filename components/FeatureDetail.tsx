@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { ChevronLeft, Edit3, Save, X, ChevronRight, Target, CheckSquare, Star } from 'lucide-react';
+import { ChevronLeft, Edit3, Save, X, ChevronRight, Target, CheckSquare, Star, Users } from 'lucide-react';
 
 interface FeatureData {
   id: string;
