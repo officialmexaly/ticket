@@ -61,7 +61,7 @@ const candidates = [
   }
 ];
 
-export async function GET(request) {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const company = searchParams.get('company');
   const posting_id = searchParams.get('posting_id');
@@ -93,7 +93,7 @@ export async function GET(request) {
   });
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
 
