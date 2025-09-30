@@ -68,6 +68,7 @@ export default function ReportsPage() {
 
   useEffect(() => {
     setReports(mockReports)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const filteredReports = reports.filter(report => {
@@ -209,6 +210,7 @@ export default function ReportsPage() {
           {['all', 'tickets', 'users', 'performance', 'system'].map((type) => (
             <button
               key={type}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onClick={() => setSelectedType(type as any)}
               className={`px-3 py-1 text-sm rounded-lg transition-colors ${
                 selectedType === type

@@ -1,16 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { HelpCircle, Search, Book, Video, MessageCircle, Mail, Phone, Clock, ChevronRight, Star } from 'lucide-react'
+import { HelpCircle, Search, Book, Video, MessageCircle, Mail, Phone, Clock, ChevronRight } from 'lucide-react'
 
-interface HelpArticle {
-  id: string
-  title: string
-  content: string
-  category: string
-  helpful: number
-  views: number
-}
+// Unused interface kept for future use
+// interface HelpArticle {
+//   id: string
+//   title: string
+//   content: string
+//   category: string
+//   helpful: number
+//   views: number
+// }
 
 interface FAQ {
   id: string
@@ -326,6 +327,7 @@ export default function HelpPage() {
         ].map((section) => (
           <button
             key={section.id}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onClick={() => setActiveSection(section.id as any)}
             className={`px-6 py-2 text-sm font-medium rounded-lg transition-colors ${
               activeSection === section.id

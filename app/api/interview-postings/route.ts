@@ -70,7 +70,7 @@ const interviewPostings = [
   }
 ];
 
-export async function GET(request) {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const company = searchParams.get('company');
   const status = searchParams.get('status');
@@ -94,7 +94,7 @@ export async function GET(request) {
   });
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
 

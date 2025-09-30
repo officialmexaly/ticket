@@ -65,6 +65,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     setNotifications(mockNotifications)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const filteredNotifications = notifications.filter(notification => {
@@ -106,19 +107,20 @@ export default function NotificationsPage() {
     }
   }
 
-  const getNotificationBgColor = (type: Notification['type'], read: boolean) => {
-    const opacity = read ? '50' : '100'
-    switch (type) {
-      case 'success':
-        return `bg-green-${opacity}`
-      case 'warning':
-        return `bg-yellow-${opacity}`
-      case 'error':
-        return `bg-red-${opacity}`
-      default:
-        return `bg-blue-${opacity}`
-    }
-  }
+  // Unused function kept for future use
+  // const getNotificationBgColor = (type: Notification['type'], read: boolean) => {
+  //   const opacity = read ? '50' : '100'
+  //   switch (type) {
+  //     case 'success':
+  //       return `bg-green-${opacity}`
+  //     case 'warning':
+  //       return `bg-yellow-${opacity}`
+  //     case 'error':
+  //       return `bg-red-${opacity}`
+  //     default:
+  //       return `bg-blue-${opacity}`
+  //   }
+  // }
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString)

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { supabase } from '../../lib/supabase'
-import { User, Mail, Bell, Shield, Palette, Globe, Save, Eye, EyeOff, Camera } from 'lucide-react'
+import { User, Mail, Bell, Shield, Palette, Save, Eye, EyeOff, Camera } from 'lucide-react'
 
 interface UserSettings {
   full_name: string
@@ -41,6 +41,7 @@ export default function SettingsPage() {
 
   // Settings now work without authentication
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSettingChange = (key: keyof UserSettings, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }))
   }

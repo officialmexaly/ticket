@@ -25,7 +25,6 @@ import {
 } from 'lucide-react';
 
 const LandingPage = () => {
-  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set());
 

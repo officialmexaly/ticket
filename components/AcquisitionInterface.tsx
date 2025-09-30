@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import {
   Plus,
-  Clock,
   Target,
   Calendar,
   Users,
@@ -22,7 +21,6 @@ import {
   Edit2,
   MoreHorizontal,
   Filter,
-  Search,
   Award,
   Activity
 } from 'lucide-react';
@@ -70,10 +68,9 @@ interface AcquisitionInterfaceProps {
   setCurrentView?: (view: string) => void;
 }
 
-const AcquisitionInterface: React.FC<AcquisitionInterfaceProps> = ({ setCurrentView }) => {
+const AcquisitionInterface: React.FC<AcquisitionInterfaceProps> = () => {
   const [requisitions, setRequisitions] = useState<JobRequisition[]>([]);
   const [metrics, setMetrics] = useState<HiringMetric[]>([]);
-  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedPriority, setSelectedPriority] = useState<string>('all');

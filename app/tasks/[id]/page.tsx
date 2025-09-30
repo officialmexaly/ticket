@@ -26,7 +26,9 @@ interface TaskData {
   dependencies: string[];
   created_at: string;
   updated_at: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sub_tasks: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   feature: any;
   metrics: {
     totalSubTasks: number;

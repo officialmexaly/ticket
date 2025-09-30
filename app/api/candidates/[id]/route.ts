@@ -79,8 +79,8 @@ export async function PUT(request, { params }) {
             body.stage = 'interview';
           }
         }
-      } catch (error) {
-        console.error('Failed to fetch posting for assignment:', error);
+      } catch (err) {
+        console.error('Failed to fetch posting for assignment:', err);
       }
     }
 
@@ -97,7 +97,7 @@ export async function PUT(request, { params }) {
       data: updatedCandidate,
       message: 'Candidate updated successfully'
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       success: false,
       error: 'Failed to update candidate'
@@ -124,7 +124,7 @@ export async function DELETE(request, { params }) {
       success: true,
       message: 'Candidate deleted successfully'
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       success: false,
       error: 'Failed to delete candidate'

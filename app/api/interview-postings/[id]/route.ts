@@ -38,8 +38,8 @@ const interviewPostings = [
   }
 ];
 
-export async function GET(request, { params }) {
-  const { id } = params;
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
   const posting = interviewPostings.find(p => p.id === id);
 
@@ -56,9 +56,9 @@ export async function GET(request, { params }) {
   });
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const postingIndex = interviewPostings.findIndex(p => p.id === id);
@@ -91,9 +91,9 @@ export async function PUT(request, { params }) {
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     const postingIndex = interviewPostings.findIndex(p => p.id === id);
 

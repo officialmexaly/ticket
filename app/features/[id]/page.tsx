@@ -25,11 +25,16 @@ interface FeatureData {
   dependencies: string[];
   created_at: string;
   updated_at: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user_stories: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tasks: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   epic: any;
   acceptance_criteria?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   epics?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tickets?: any[];
   metrics: {
     totalTasks: number;

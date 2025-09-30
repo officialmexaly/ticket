@@ -22,7 +22,9 @@ interface SubTaskData {
   tags: string[];
   created_at: string;
   updated_at: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   task: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   time_logs: any[];
   metrics: {
     timeSpent: number;

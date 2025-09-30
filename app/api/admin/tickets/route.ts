@@ -3,7 +3,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
 // Check if user has admin permissions
-async function isAdmin(supabase) {
+async function isAdmin(supabase: any) {
   const { data: { user }, error } = await supabase.auth.getUser()
   if (error || !user) return false
 
@@ -16,7 +16,7 @@ async function isAdmin(supabase) {
   return profile?.is_admin || profile?.is_super_admin || false
 }
 
-export async function GET(request) {
+export async function GET(request: Request) {
   try {
     const cookieStore = await cookies()
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
@@ -57,7 +57,7 @@ export async function GET(request) {
   }
 }
 
-export async function PUT(request) {
+export async function PUT(request: Request) {
   try {
     const cookieStore = await cookies()
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
@@ -97,7 +97,7 @@ export async function PUT(request) {
   }
 }
 
-export async function DELETE(request) {
+export async function DELETE(request: Request) {
   try {
     const cookieStore = await cookies()
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore })

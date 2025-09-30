@@ -14,7 +14,7 @@ const supabase = createClient(
   }
 )
 
-export async function GET(request) {
+export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
@@ -60,7 +60,7 @@ export async function GET(request) {
   }
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     // No authentication required - skip user session check
 

@@ -36,7 +36,7 @@ export async function GET(request) {
     }
 
     return NextResponse.json(data)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -107,7 +107,7 @@ export async function POST(request) {
         try {
           // Upload to Supabase Storage
           const fileName = `drafts/${draft.id}/${Date.now()}-${key}.wav`
-          const { data: uploadData, error: uploadError } = await supabase.storage
+          const { error: uploadError } = await supabase.storage
             .from('voice-notes')
             .upload(fileName, value, {
               contentType: 'audio/wav'

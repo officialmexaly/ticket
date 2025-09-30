@@ -141,7 +141,7 @@ export async function POST(request) {
       data: newCandidate,
       message: 'Candidate created successfully'
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       success: false,
       error: 'Failed to create candidate'

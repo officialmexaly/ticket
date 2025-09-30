@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter } from 'next/navigation'
 
 function ResetPasswordForm() {
   const [password, setPassword] = useState('')
@@ -10,7 +10,6 @@ function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,7 +34,7 @@ function ResetPasswordForm() {
       setTimeout(() => {
         router.push('/')
       }, 3000)
-    } catch (err) {
+    } catch {
       setError('Failed to reset password. Please try again.')
     } finally {
       setLoading(false)

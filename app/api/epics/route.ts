@@ -16,7 +16,6 @@ const supabase = createClient(
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url)
-    const project_id = searchParams.get('project_id')
     const status = searchParams.get('status')
     const priority = searchParams.get('priority')
 

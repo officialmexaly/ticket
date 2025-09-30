@@ -18,7 +18,6 @@ interface Article {
 
 export default function KnowledgeBasePage() {
   const [articles, setArticles] = useState<Article[]>([])
-  const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
@@ -87,6 +86,7 @@ export default function KnowledgeBasePage() {
 
   useEffect(() => {
     setArticles(mockArticles)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const categories = ['all', ...Array.from(new Set(mockArticles.map(article => article.category)))]
