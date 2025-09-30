@@ -15,7 +15,9 @@ import {
   Users,
   Calendar,
   Layers,
-  Plus
+  Plus,
+  Activity,
+  CheckCircle
 } from 'lucide-react';
 import ProfessionalAgileBoard from './ProfessionalAgileBoard';
 import ProfessionalDashboard from './ProfessionalDashboard';
@@ -294,51 +296,63 @@ const EnhancedDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-card border-b border-border">
-        <div className="px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Professional Agile Workspace</h1>
-              <p className="text-muted-foreground">Manage epics, features, and tasks with enterprise-grade workflows</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Badge variant="outline" className="text-green-600 border-green-600">
-                {epics.length} Epics
-              </Badge>
-              <Badge variant="outline" className="text-blue-600 border-blue-600">
-                {features.length} Features
-              </Badge>
-              <Badge variant="outline" className="text-purple-600 border-purple-600">
-                {tasks.length} Tasks
-              </Badge>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div className="max-w-[1800px] mx-auto px-24 py-8">
+        {/* Professional Header */}
+        <div className="relative overflow-hidden bg-white rounded-2xl mb-8 shadow-lg border border-slate-200">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5"></div>
+          <div className="relative px-8 py-8">
+            <div className="flex items-center justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
+                    <Layers className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-3xl font-bold text-slate-900">Professional Agile Workspace</h1>
+                    <p className="text-slate-600 text-base font-medium">Manage epics, features, and tasks with enterprise-grade workflows</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-200">
+                  <Target className="w-4 h-4 text-emerald-600" />
+                  <span className="text-sm font-semibold text-emerald-700">{epics.length} Epics</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-xl border border-blue-200">
+                  <Flag className="w-4 h-4 text-blue-600" />
+                  <span className="text-sm font-semibold text-blue-700">{features.length} Features</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 bg-purple-50 rounded-xl border border-purple-200">
+                  <CheckSquare className="w-4 h-4 text-purple-600" />
+                  <span className="text-sm font-semibold text-purple-700">{tasks.length} Tasks</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="p-6">
+        {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 max-w-2xl">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+          <TabsList className="inline-flex h-14 items-center justify-center rounded-xl bg-white p-1.5 text-slate-500 shadow-sm border border-slate-200">
+            <TabsTrigger value="dashboard" className="rounded-lg px-6 py-2.5 text-sm font-medium flex items-center gap-2">
               <LayoutDashboard className="w-4 h-4" />
               Dashboard
             </TabsTrigger>
-            <TabsTrigger value="epics" className="flex items-center gap-2">
+            <TabsTrigger value="epics" className="rounded-lg px-6 py-2.5 text-sm font-medium flex items-center gap-2">
               <Target className="w-4 h-4" />
               Epics
             </TabsTrigger>
-            <TabsTrigger value="features" className="flex items-center gap-2">
+            <TabsTrigger value="features" className="rounded-lg px-6 py-2.5 text-sm font-medium flex items-center gap-2">
               <Flag className="w-4 h-4" />
               Features
             </TabsTrigger>
-            <TabsTrigger value="tasks" className="flex items-center gap-2">
+            <TabsTrigger value="tasks" className="rounded-lg px-6 py-2.5 text-sm font-medium flex items-center gap-2">
               <CheckSquare className="w-4 h-4" />
               Tasks
             </TabsTrigger>
-            <TabsTrigger value="sprints" className="flex items-center gap-2">
+            <TabsTrigger value="sprints" className="rounded-lg px-6 py-2.5 text-sm font-medium flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               Sprints
             </TabsTrigger>
@@ -357,50 +371,50 @@ const EnhancedDashboardPage: React.FC = () => {
 
           {/* Epics Tab */}
           <TabsContent value="epics">
-            <Card>
-              <CardHeader>
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="border-b border-slate-100 bg-white">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5" />
+                  <CardTitle className="flex items-center gap-3 text-xl">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                      <Target className="w-5 h-5 text-white" />
+                    </div>
                     Epic Portfolio Management
                   </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setEpicModal({isOpen: true})}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      New Epic
-                    </Button>
-                  </div>
+                  <Button
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    size="sm"
+                    onClick={() => setEpicModal({isOpen: true})}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Epic
+                  </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="h-[800px]">
                   <ProfessionalAgileBoard
                     view="epics"
-                  epics={epics}
-                  features={features}
-                  tasks={tasks}
-                  subtasks={subtasks}
-                  onStatusChange={handleStatusChange}
-                  onEdit={(item, itemType) => {
-                    if (itemType === 'epic') {
-                      setEpicModal({isOpen: true, epic: item as Epic});
-                    } else if (itemType === 'feature') {
-                      setFeatureModal({isOpen: true, feature: item as Feature});
-                    } else if (itemType === 'task') {
-                      setTaskModal({isOpen: true, task: item as Task});
-                    }
-                  }}
-                  onDelete={(item, itemType) => {
-                    setDeleteModal({
-                      isOpen: true,
-                      item: {id: item.id, name: (item as any).name || (item as any).title},
-                      itemType
-                    });
-                  }}
+                    epics={epics}
+                    features={features}
+                    tasks={tasks}
+                    subtasks={subtasks}
+                    onStatusChange={handleStatusChange}
+                    onEdit={(item, itemType) => {
+                      if (itemType === 'epic') {
+                        setEpicModal({isOpen: true, epic: item as Epic});
+                      } else if (itemType === 'feature') {
+                        setFeatureModal({isOpen: true, feature: item as Feature});
+                      } else if (itemType === 'task') {
+                        setTaskModal({isOpen: true, task: item as Task});
+                      }
+                    }}
+                    onDelete={(item, itemType) => {
+                      setDeleteModal({
+                        isOpen: true,
+                        item: {id: item.id, name: (item as any).name || (item as any).title},
+                        itemType
+                      });
+                    }}
                   />
                 </div>
               </CardContent>
@@ -409,50 +423,50 @@ const EnhancedDashboardPage: React.FC = () => {
 
           {/* Features Tab */}
           <TabsContent value="features">
-            <Card>
-              <CardHeader>
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="border-b border-slate-100 bg-white">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="flex items-center gap-2">
-                    <Flag className="w-5 h-5" />
+                  <CardTitle className="flex items-center gap-3 text-xl">
+                    <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                      <Flag className="w-5 h-5 text-white" />
+                    </div>
                     Feature Development Pipeline
                   </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setFeatureModal({isOpen: true})}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      New Feature
-                    </Button>
-                  </div>
+                  <Button
+                    className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
+                    size="sm"
+                    onClick={() => setFeatureModal({isOpen: true})}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Feature
+                  </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="h-[800px]">
                   <ProfessionalAgileBoard
                     view="features"
-                  epics={epics}
-                  features={features}
-                  tasks={tasks}
-                  subtasks={subtasks}
-                  onStatusChange={handleStatusChange}
-                  onEdit={(item, itemType) => {
-                    if (itemType === 'epic') {
-                      setEpicModal({isOpen: true, epic: item as Epic});
-                    } else if (itemType === 'feature') {
-                      setFeatureModal({isOpen: true, feature: item as Feature});
-                    } else if (itemType === 'task') {
-                      setTaskModal({isOpen: true, task: item as Task});
-                    }
-                  }}
-                  onDelete={(item, itemType) => {
-                    setDeleteModal({
-                      isOpen: true,
-                      item: {id: item.id, name: (item as any).name || (item as any).title},
-                      itemType
-                    });
-                  }}
+                    epics={epics}
+                    features={features}
+                    tasks={tasks}
+                    subtasks={subtasks}
+                    onStatusChange={handleStatusChange}
+                    onEdit={(item, itemType) => {
+                      if (itemType === 'epic') {
+                        setEpicModal({isOpen: true, epic: item as Epic});
+                      } else if (itemType === 'feature') {
+                        setFeatureModal({isOpen: true, feature: item as Feature});
+                      } else if (itemType === 'task') {
+                        setTaskModal({isOpen: true, task: item as Task});
+                      }
+                    }}
+                    onDelete={(item, itemType) => {
+                      setDeleteModal({
+                        isOpen: true,
+                        item: {id: item.id, name: (item as any).name || (item as any).title},
+                        itemType
+                      });
+                    }}
                   />
                 </div>
               </CardContent>
@@ -461,50 +475,50 @@ const EnhancedDashboardPage: React.FC = () => {
 
           {/* Tasks Tab */}
           <TabsContent value="tasks">
-            <Card>
-              <CardHeader>
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="border-b border-slate-100 bg-white">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="flex items-center gap-2">
-                    <CheckSquare className="w-5 h-5" />
+                  <CardTitle className="flex items-center gap-3 text-xl">
+                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                      <CheckSquare className="w-5 h-5 text-white" />
+                    </div>
                     Task Execution Board
                   </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setTaskModal({isOpen: true})}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      New Task
-                    </Button>
-                  </div>
+                  <Button
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    size="sm"
+                    onClick={() => setTaskModal({isOpen: true})}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Task
+                  </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="h-[800px]">
                   <ProfessionalAgileBoard
                     view="tasks"
-                  epics={epics}
-                  features={features}
-                  tasks={tasks}
-                  subtasks={subtasks}
-                  onStatusChange={handleStatusChange}
-                  onEdit={(item, itemType) => {
-                    if (itemType === 'epic') {
-                      setEpicModal({isOpen: true, epic: item as Epic});
-                    } else if (itemType === 'feature') {
-                      setFeatureModal({isOpen: true, feature: item as Feature});
-                    } else if (itemType === 'task') {
-                      setTaskModal({isOpen: true, task: item as Task});
-                    }
-                  }}
-                  onDelete={(item, itemType) => {
-                    setDeleteModal({
-                      isOpen: true,
-                      item: {id: item.id, name: (item as any).name || (item as any).title},
-                      itemType
-                    });
-                  }}
+                    epics={epics}
+                    features={features}
+                    tasks={tasks}
+                    subtasks={subtasks}
+                    onStatusChange={handleStatusChange}
+                    onEdit={(item, itemType) => {
+                      if (itemType === 'epic') {
+                        setEpicModal({isOpen: true, epic: item as Epic});
+                      } else if (itemType === 'feature') {
+                        setFeatureModal({isOpen: true, feature: item as Feature});
+                      } else if (itemType === 'task') {
+                        setTaskModal({isOpen: true, task: item as Task});
+                      }
+                    }}
+                    onDelete={(item, itemType) => {
+                      setDeleteModal({
+                        isOpen: true,
+                        item: {id: item.id, name: (item as any).name || (item as any).title},
+                        itemType
+                      });
+                    }}
                   />
                 </div>
               </CardContent>
@@ -516,59 +530,70 @@ const EnhancedDashboardPage: React.FC = () => {
             <div className="space-y-6">
               {/* Sprint Summary Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm font-medium text-gray-600">Active Sprints</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {sprints.filter(s => s.status === 'active').length}
+                <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                        <Activity className="w-5 h-5 text-white" />
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Currently running
-                    </p>
+                    <div className="space-y-1">
+                      <h3 className="font-bold text-3xl text-slate-900">
+                        {sprints.filter(s => s.status === 'active').length}
+                      </h3>
+                      <p className="text-sm font-medium text-slate-900">Active Sprints</p>
+                      <p className="text-xs text-slate-600">Currently running</p>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm font-medium text-gray-600">Planned Sprints</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {sprints.filter(s => s.status === 'planned').length}
+                <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+                        <Calendar className="w-5 h-5 text-white" />
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      In planning phase
-                    </p>
+                    <div className="space-y-1">
+                      <h3 className="font-bold text-3xl text-slate-900">
+                        {sprints.filter(s => s.status === 'planned').length}
+                      </h3>
+                      <p className="text-sm font-medium text-slate-900">Planned Sprints</p>
+                      <p className="text-xs text-slate-600">In planning phase</p>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm font-medium text-gray-600">Completed Sprints</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {sprints.filter(s => s.status === 'completed').length}
+                <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-white" />
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Successfully delivered
-                    </p>
+                    <div className="space-y-1">
+                      <h3 className="font-bold text-3xl text-slate-900">
+                        {sprints.filter(s => s.status === 'completed').length}
+                      </h3>
+                      <p className="text-sm font-medium text-slate-900">Completed Sprints</p>
+                      <p className="text-xs text-slate-600">Successfully delivered</p>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
 
               {/* Sprint List */}
-              <Card>
-                <CardHeader>
+              <Card className="border-slate-200 shadow-sm">
+                <CardHeader className="border-b border-slate-100 bg-white">
                   <div className="flex justify-between items-center">
-                    <CardTitle className="flex items-center gap-2">
-                      <Calendar className="w-5 h-5" />
+                    <CardTitle className="flex items-center gap-3 text-xl">
+                      <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+                        <Calendar className="w-5 h-5 text-white" />
+                      </div>
                       Sprint Management
                     </CardTitle>
                     <Button
-                      variant="outline"
+                      className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
                       size="sm"
                       onClick={() => setSprintModal({isOpen: true, sprint: null})}
                     >
@@ -577,44 +602,49 @@ const EnhancedDashboardPage: React.FC = () => {
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
+                <CardContent className="p-6">
+                  <div className="space-y-3">
                     {sprints.map((sprint) => (
                       <div
                         key={sprint.id}
-                        className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                        className="border border-slate-200 rounded-xl p-5 hover:bg-slate-50 hover:shadow-sm transition-all"
                       >
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <h3 className="font-semibold">{sprint.name}</h3>
-                            {sprint.description && (
-                              <p className="text-sm text-gray-600 mt-1">{sprint.description}</p>
+                            <h3 className="font-semibold text-lg text-slate-900">{sprint.name}</h3>
+                            {sprint.sprint_goal && (
+                              <p className="text-sm text-slate-600 mt-2">{sprint.sprint_goal}</p>
                             )}
-                            <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                              <span>{new Date(sprint.start_date).toLocaleDateString()}</span>
+                            <div className="flex items-center gap-4 mt-3 text-sm text-slate-500">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="w-4 h-4" />
+                                <span>{new Date(sprint.start_date).toLocaleDateString()}</span>
+                              </div>
                               <span>→</span>
                               <span>{new Date(sprint.end_date).toLocaleDateString()}</span>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              variant={
-                                sprint.status === 'active' ? 'default' :
-                                sprint.status === 'completed' ? 'secondary' :
-                                sprint.status === 'planned' ? 'outline' : 'destructive'
-                              }
-                            >
-                              {sprint.status}
-                            </Badge>
-                          </div>
+                          <Badge
+                            className={`${
+                              sprint.status === 'active' ? 'bg-blue-100 text-blue-700 border-blue-200' :
+                              sprint.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' :
+                              sprint.status === 'planned' ? 'bg-orange-100 text-orange-700 border-orange-200' :
+                              'bg-red-100 text-red-700 border-red-200'
+                            }`}
+                          >
+                            {sprint.status}
+                          </Badge>
                         </div>
                       </div>
                     ))}
 
                     {sprints.length === 0 && (
-                      <div className="text-center py-8 text-gray-500">
-                        <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                        <p>No sprints found. Create your first sprint to get started.</p>
+                      <div className="text-center py-12 text-slate-500">
+                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Calendar className="w-8 h-8 text-slate-400" />
+                        </div>
+                        <p className="text-base font-medium">No sprints found</p>
+                        <p className="text-sm mt-1">Create your first sprint to get started.</p>
                       </div>
                     )}
                   </div>
@@ -623,9 +653,8 @@ const EnhancedDashboardPage: React.FC = () => {
             </div>
           </TabsContent>
         </Tabs>
-      </div>
 
-      {/* CRUD Modals */}
+        {/* CRUD Modals */}
       <EpicFormModal
         isOpen={epicModal.isOpen}
         onClose={() => setEpicModal({isOpen: false})}
@@ -663,6 +692,7 @@ const EnhancedDashboardPage: React.FC = () => {
         sprint={sprintModal.sprint}
         onSuccess={refreshData}
       />
+      </div>
     </div>
   );
 };

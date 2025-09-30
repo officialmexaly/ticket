@@ -260,7 +260,7 @@ const TicketCRUD: React.FC<TicketCRUDProps> = ({ setCurrentView }) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-8 py-6">
         {/* Header Section */}
         <div className="flex items-center justify-between mb-8">
           <div>

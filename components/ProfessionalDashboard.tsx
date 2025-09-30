@@ -125,28 +125,32 @@ const KPICard: React.FC<{
   icon: React.ReactNode;
   color: string;
 }> = ({ title, value, subtitle, trend, trendValue, icon, color }) => (
-  <Card className="relative overflow-hidden">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
-      <div className={`${color} p-2 rounded-lg text-white`}>
-        {icon}
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="text-2xl font-bold">{value}</div>
-      {subtitle && <p className="text-xs text-gray-600 mt-1">{subtitle}</p>}
-      {trend && trendValue && (
-        <div className="flex items-center mt-2 text-sm">
-          {trend === 'up' ? (
-            <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-          ) : trend === 'down' ? (
-            <TrendingDown className="w-4 h-4 text-red-500 mr-1" />
-          ) : null}
-          <span className={trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : 'text-gray-500'}>
-            {trendValue}
-          </span>
+  <Card className="relative overflow-hidden hover:shadow-lg transition-shadow duration-300 border-slate-200">
+    <CardContent className="p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div className={`w-12 h-12 ${color} rounded-xl flex items-center justify-center text-white shadow-sm`}>
+          {icon}
         </div>
-      )}
+        {trend && trendValue && (
+          <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${
+            trend === 'up' ? 'bg-green-100 text-green-700' :
+            trend === 'down' ? 'bg-red-100 text-red-700' :
+            'bg-gray-100 text-gray-700'
+          }`}>
+            {trend === 'up' ? (
+              <TrendingUp className="w-3 h-3" />
+            ) : trend === 'down' ? (
+              <TrendingDown className="w-3 h-3" />
+            ) : null}
+            <span>{trendValue}</span>
+          </div>
+        )}
+      </div>
+      <div className="space-y-1">
+        <h3 className="font-bold text-3xl text-slate-900">{value}</h3>
+        <p className="text-sm font-medium text-slate-900">{title}</p>
+        {subtitle && <p className="text-xs text-slate-600">{subtitle}</p>}
+      </div>
     </CardContent>
   </Card>
 );
@@ -188,7 +192,7 @@ const ProfessionalDashboard: React.FC<DashboardProps> = ({
     const throughput = Math.round(completedTasks / 4); // Weekly throughput
 
     // Quality metrics
-    const defectRate = Math.round(Math.random() * 5); // Mock defect rate %
+    const defectRate = 3; // Mock defect rate %
     const testCoverage = 85; // Mock test coverage %
 
     // Team metrics
@@ -268,206 +272,216 @@ const ProfessionalDashboard: React.FC<DashboardProps> = ({
   // Flow metrics over time (mock data for demonstration)
   const flowTrendData = Array.from({ length: 12 }, (_, i) => ({
     week: `W${i + 1}`,
-    throughput: Math.floor(Math.random() * 10) + 5,
-    cycleTime: Math.floor(Math.random() * 5) + 3,
-    leadTime: Math.floor(Math.random() * 8) + 8
+    throughput: 5 + (i % 5),
+    cycleTime: 3 + (i % 3),
+    leadTime: 8 + (i % 4)
   }));
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Agile Performance Dashboard</h1>
-          <p className="text-gray-600">Real-time insights into your agile delivery</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div className="max-w-[1600px] mx-auto px-8 py-8 space-y-8">
+        {/* Header */}
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">Agile Performance Dashboard</h1>
+            <p className="text-slate-600 text-base">Real-time insights into your agile delivery</p>
+          </div>
+          <div className="flex gap-2 bg-white rounded-xl p-1 shadow-sm border border-slate-200">
+            {(['week', 'month', 'quarter'] as const).map((timeframe) => (
+              <Button
+                key={timeframe}
+                variant={selectedTimeframe === timeframe ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setSelectedTimeframe(timeframe)}
+                className={selectedTimeframe === timeframe ? "bg-slate-900 hover:bg-slate-800" : ""}
+              >
+                {timeframe.charAt(0).toUpperCase() + timeframe.slice(1)}
+              </Button>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-2">
-          {(['week', 'month', 'quarter'] as const).map((timeframe) => (
-            <Button
-              key={timeframe}
-              variant={selectedTimeframe === timeframe ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedTimeframe(timeframe)}
-            >
-              {timeframe.charAt(0).toUpperCase() + timeframe.slice(1)}
-            </Button>
-          ))}
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+          <KPICard
+            title="Epic Completion"
+            value={`${metrics.epic.completionRate}%`}
+            subtitle={`${metrics.epic.completed}/${metrics.epic.total} epics`}
+            trend="up"
+            trendValue="+5%"
+            icon={<Target className="w-5 h-5" />}
+            color="bg-blue-500"
+          />
+
+          <KPICard
+            title="Feature Velocity"
+            value={metrics.feature.velocity}
+            subtitle="features/month"
+            trend="up"
+            trendValue="+12%"
+            icon={<Zap className="w-5 h-5" />}
+            color="bg-green-500"
+          />
+
+          <KPICard
+            title="Cycle Time"
+            value={`${metrics.flow.cycleTime}d`}
+            subtitle="avg completion time"
+            trend="down"
+            trendValue="-2d"
+            icon={<Clock className="w-5 h-5" />}
+            color="bg-orange-500"
+          />
+
+          <KPICard
+            title="Throughput"
+            value={metrics.flow.throughput}
+            subtitle="tasks/week"
+            trend="up"
+            trendValue="+8%"
+            icon={<Activity className="w-5 h-5" />}
+            color="bg-purple-500"
+          />
+
+          <KPICard
+            title="Active Tasks"
+            value={metrics.task.inProgress}
+            subtitle="in progress"
+            icon={<CheckCircle className="w-5 h-5" />}
+            color="bg-indigo-500"
+          />
+
+          <KPICard
+            title="Team Members"
+            value={metrics.team.members}
+            subtitle="active contributors"
+            icon={<Users className="w-5 h-5" />}
+            color="bg-pink-500"
+          />
         </div>
-      </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        <KPICard
-          title="Epic Completion"
-          value={`${metrics.epic.completionRate}%`}
-          subtitle={`${metrics.epic.completed}/${metrics.epic.total} epics`}
-          trend="up"
-          trendValue="+5% vs last month"
-          icon={<Target className="w-4 h-4" />}
-          color="bg-blue-500"
-        />
+        {/* Main Dashboard Tabs */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="inline-flex h-12 items-center justify-center rounded-xl bg-white p-1 text-slate-500 shadow-sm border border-slate-200">
+            <TabsTrigger value="overview" className="rounded-lg px-6 py-2 text-sm font-medium">Overview</TabsTrigger>
+            <TabsTrigger value="flow" className="rounded-lg px-6 py-2 text-sm font-medium">Flow Metrics</TabsTrigger>
+            <TabsTrigger value="quality" className="rounded-lg px-6 py-2 text-sm font-medium">Quality</TabsTrigger>
+            <TabsTrigger value="team" className="rounded-lg px-6 py-2 text-sm font-medium">Team Performance</TabsTrigger>
+          </TabsList>
 
-        <KPICard
-          title="Feature Velocity"
-          value={metrics.feature.velocity}
-          subtitle="features/month"
-          trend="up"
-          trendValue="+12% vs last month"
-          icon={<Zap className="w-4 h-4" />}
-          color="bg-green-500"
-        />
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Epic Status Distribution */}
+              <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+                    <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <Target className="w-4 h-4 text-blue-600" />
+                    </div>
+                    Epic Status Distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={240}>
+                    <PieChart>
+                      <Pie
+                        data={epicStatusData}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={90}
+                        dataKey="count"
+                        label={({ status, count }) => `${status}: ${count}`}
+                      >
+                        {epicStatusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-        <KPICard
-          title="Cycle Time"
-          value={`${metrics.flow.cycleTime}d`}
-          subtitle="avg completion time"
-          trend="down"
-          trendValue="-2d vs last month"
-          icon={<Clock className="w-4 h-4" />}
-          color="bg-orange-500"
-        />
+              {/* Feature Status Distribution */}
+              <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+                    <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                      <Flag className="w-4 h-4 text-green-600" />
+                    </div>
+                    Feature Status Distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={240}>
+                    <BarChart data={featureStatusData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <XAxis dataKey="status" tick={{ fontSize: 11 }} />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-        <KPICard
-          title="Throughput"
-          value={metrics.flow.throughput}
-          subtitle="tasks/week"
-          trend="up"
-          trendValue="+8% vs last week"
-          icon={<Activity className="w-4 h-4" />}
-          color="bg-purple-500"
-        />
+              {/* Priority Distribution */}
+              <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+                    <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                      <AlertTriangle className="w-4 h-4 text-orange-600" />
+                    </div>
+                    Priority Distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={240}>
+                    <PieChart>
+                      <Pie
+                        data={priorityData}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={90}
+                        dataKey="count"
+                        label={({ priority, count }) => `${priority}: ${count}`}
+                      >
+                        {priorityData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
 
-        <KPICard
-          title="Active Tasks"
-          value={metrics.task.inProgress}
-          subtitle="in progress"
-          icon={<CheckCircle className="w-4 h-4" />}
-          color="bg-indigo-500"
-        />
-
-        <KPICard
-          title="Team Members"
-          value={metrics.team.members}
-          subtitle="active contributors"
-          icon={<Users className="w-4 h-4" />}
-          color="bg-pink-500"
-        />
-      </div>
-
-      {/* Main Dashboard Tabs */}
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="flow">Flow Metrics</TabsTrigger>
-          <TabsTrigger value="quality">Quality</TabsTrigger>
-          <TabsTrigger value="team">Team Performance</TabsTrigger>
-        </TabsList>
-
-        {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Epic Status Distribution */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="w-5 h-5" />
-                  Epic Status Distribution
+            {/* Work Type Distribution */}
+            <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 text-purple-600" />
+                  </div>
+                  Task Type Distribution
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                    <Pie
-                      data={epicStatusData}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      dataKey="count"
-                      label={({ status, count }) => `${status}: ${count}`}
-                    >
-                      {epicStatusData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            {/* Feature Status Distribution */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Flag className="w-5 h-5" />
-                  Feature Status Distribution
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={featureStatusData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="status" />
+                <ResponsiveContainer width="100%" height={320}>
+                  <BarChart data={taskTypeData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis dataKey="type" tick={{ fontSize: 12 }} />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="count" fill="#8884d8" />
+                    <Legend />
+                    <Bar dataKey="count" fill="#0088FE" radius={[8, 8, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
-
-            {/* Priority Distribution */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5" />
-                  Priority Distribution
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                    <Pie
-                      data={priorityData}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      dataKey="count"
-                      label={({ priority, count }) => `${priority}: ${count}`}
-                    >
-                      {priorityData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Work Type Distribution */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5" />
-                Task Type Distribution
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={taskTypeData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="type" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="count" fill="#0088FE" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
+          </TabsContent>
 
         {/* Flow Metrics Tab */}
         <TabsContent value="flow" className="space-y-4">
@@ -647,7 +661,8 @@ const ProfessionalDashboard: React.FC<DashboardProps> = ({
             </Card>
           </div>
         </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   );
 };

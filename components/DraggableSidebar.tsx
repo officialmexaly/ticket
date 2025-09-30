@@ -187,33 +187,7 @@ const DraggableSidebar: React.FC<DraggableSidebarProps> = ({
         id: 'hr',
         label: 'HR Management',
         icon: 'Users',
-        view: 'hr',
-        isGroup: true,
-        children: [
-          { id: 'employees', label: 'Employees', icon: 'User', view: 'hr-employees' },
-          { id: 'departments', label: 'Departments', icon: 'Building2', view: 'hr-departments' },
-          { id: 'positions', label: 'Positions', icon: 'Briefcase', view: 'hr-positions' },
-          { id: 'time-off', label: 'Time Off', icon: 'Clock', view: 'hr-timeoff' },
-          {
-            id: 'talent-hunt',
-            label: 'Talent Hunt',
-            icon: 'Search',
-            view: 'hr-talent-hunt',
-            children: [
-              { id: 'recruitment', label: 'Recruitment', icon: 'UserPlus', view: 'hr-recruitment' }
-            ]
-          },
-          {
-            id: 'acquisition',
-            label: 'Acquisition',
-            icon: 'UserCheck',
-            view: 'hr-acquisition',
-            children: [
-              { id: 'performance', label: 'Performance', icon: 'Award', view: 'hr-performance' }
-            ]
-          },
-          { id: 'outsourcing', label: 'Outsourcing', icon: 'Handshake', view: 'hr-outsourcing' }
-        ]
+        view: 'hr-employees'
       },
       {
         id: 'analytics',
@@ -364,6 +338,7 @@ const DraggableSidebar: React.FC<DraggableSidebarProps> = ({
             className={`group ${snapshot.isDragging ? 'opacity-75' : ''}`}
           >
             <div
+              {...provided.dragHandleProps}
               className={`
                 group/item relative flex items-center gap-3 px-3 py-2.5 mx-1 rounded-xl cursor-pointer
                 transition-all duration-300 ease-out
@@ -379,12 +354,9 @@ const DraggableSidebar: React.FC<DraggableSidebarProps> = ({
                 hover:scale-[1.02] active:scale-[0.98]
               `}
             >
-              {/* Drag Handle */}
+              {/* Drag Handle - Only visible in edit mode */}
               {!sidebarCollapsed && editMode && (
-                <div
-                  {...provided.dragHandleProps}
-                  className="opacity-0 group-hover:opacity-60 group-hover:group/item:opacity-100 transition-all duration-300 cursor-grab active:cursor-grabbing hover:scale-110"
-                >
+                <div className="opacity-0 group-hover:opacity-60 group-hover:group/item:opacity-100 transition-all duration-300 cursor-grab active:cursor-grabbing hover:scale-110">
                   <GripVertical className="w-4 h-4 text-sidebar-foreground/40 hover:text-sidebar-foreground/60" />
                 </div>
               )}
@@ -404,12 +376,15 @@ const DraggableSidebar: React.FC<DraggableSidebarProps> = ({
                 <>
                   {/* Label */}
                   <span
-                    className="flex-1 font-medium tracking-wide"
+                    className="flex-1 font-medium tracking-wide cursor-pointer"
                     onClick={() => {
+                      // Always navigate to the view if it exists
+                      if (item.view) {
+                        setCurrentView(item.view);
+                      }
+                      // If it has children, also toggle the section
                       if (hasChildren) {
                         toggleSection(item.id);
-                      } else if (item.view) {
-                        setCurrentView(item.view);
                       }
                     }}
                   >
@@ -524,29 +499,32 @@ const DraggableSidebar: React.FC<DraggableSidebarProps> = ({
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className={`
-        bg-sidebar border-r border-sidebar-border transition-all duration-300 flex flex-col
+        bg-gradient-to-b from-slate-50 to-white border-r border-slate-200/60 transition-all duration-300 flex flex-col
+        shadow-2xl backdrop-blur-xl
         ${isMobile
-          ? sidebarCollapsed ? 'w-0 -translate-x-full overflow-hidden' : 'w-64 translate-x-0 fixed inset-y-0 left-0 z-50'
-          : sidebarCollapsed ? 'w-16' : 'w-64'
+          ? sidebarCollapsed ? 'w-0 -translate-x-full overflow-hidden' : 'w-72 translate-x-0 fixed inset-y-0 left-0 z-50'
+          : sidebarCollapsed ? 'w-16' : 'w-72'
         }
         ${isMobile && !sidebarCollapsed ? 'md:relative md:translate-x-0' : ''}
       `}>
 
-        {/* Header */}
-        <div className={`${sidebarCollapsed ? 'p-3' : 'p-6'} border-b border-sidebar-border/50 bg-gradient-to-r from-sidebar to-sidebar/95`}>
+        {/* Premium Header */}
+        <div className={`${sidebarCollapsed ? 'p-3' : 'p-6'} border-b border-slate-200/50 bg-gradient-to-r from-white/90 to-slate-50/90 backdrop-blur-xl`}>
           <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-4'}`}>
             <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-105">
-                <Ticket className="text-white w-5 h-5" />
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-105">
+                <Ticket className="text-white w-6 h-6" />
               </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-sidebar shadow-sm"></div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center shadow-md">
+                <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+              </div>
             </div>
             {!sidebarCollapsed && (
               <div className="flex-1">
-                <h1 className="text-lg font-bold text-sidebar-foreground bg-gradient-to-r from-sidebar-foreground to-sidebar-foreground/80 bg-clip-text">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
                   HelpDesk Pro
                 </h1>
-                <p className="text-xs text-sidebar-foreground/60 font-medium tracking-wide">
+                <p className="text-sm text-slate-600 font-medium tracking-wide">
                   Enterprise Management
                 </p>
               </div>

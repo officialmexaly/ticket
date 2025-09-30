@@ -306,6 +306,7 @@ const OutsourcingInterface: React.FC<OutsourcingInterfaceProps> = ({ setCurrentV
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-8 py-6">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="px-6 py-6">
@@ -664,6 +665,7 @@ const OutsourcingInterface: React.FC<OutsourcingInterfaceProps> = ({ setCurrentV
             </CardContent>
           </Card>
         )}
+      </div>
       </div>
     </div>
   );

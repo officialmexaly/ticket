@@ -28,8 +28,8 @@ interface FeatureData {
   user_stories: any[];
   tasks: any[];
   epic: any;
-  acceptance_criteria?: string[];
-  epics?: any[];
+  acceptance_criteria?: string;
+  epics?: any;
   tickets?: any[];
   metrics: {
     totalTasks: number;

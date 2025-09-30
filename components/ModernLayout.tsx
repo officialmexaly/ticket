@@ -13,9 +13,7 @@ import { useAuth } from '@/lib/auth-context';
 
 // Import existing components
 import AdminDashboard from './AdminDashboard';
-import TalentHuntInterface from './TalentHuntInterface';
-import AcquisitionInterface from './AcquisitionInterface';
-import OutsourcingInterface from './OutsourcingInterface';
+import HRDashboard from './HRDashboard';
 
 interface ModernLayoutProps {
   children?: React.ReactNode;
@@ -121,27 +119,27 @@ const ModernLayout: React.FC<ModernLayoutProps> = ({ children }) => {
         return <EnhancedDashboardPage />;
 
       case 'hr':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="overview" />;
+        return <HRDashboard setCurrentView={setCurrentView} />;
       case 'hr-employees':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="employees" />;
+        return <ProfessionalHRInterface key="employees" setCurrentView={setCurrentView} defaultTab="employees" />;
       case 'hr-departments':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="departments" />;
+        return <ProfessionalHRInterface key="departments" setCurrentView={setCurrentView} defaultTab="departments" />;
       case 'hr-positions':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="positions" />;
-      case 'hr-recruitment':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="recruitment" />;
+        return <ProfessionalHRInterface key="positions" setCurrentView={setCurrentView} defaultTab="positions" />;
       case 'hr-talent-hunt':
-        return <TalentHuntInterface setCurrentView={setCurrentView} />;
+        return <ProfessionalHRInterface key="talent-hunt" setCurrentView={setCurrentView} defaultTab="talent-hunt" />;
+      case 'hr-recruitment':
+        return <ProfessionalHRInterface key="recruitment" setCurrentView={setCurrentView} defaultTab="recruitment" />;
       case 'hr-acquisition':
-        return <AcquisitionInterface setCurrentView={setCurrentView} />;
+        return <ProfessionalHRInterface key="acquisition" setCurrentView={setCurrentView} defaultTab="acquisition" />;
       case 'hr-outsourcing':
-        return <OutsourcingInterface setCurrentView={setCurrentView} />;
+        return <ProfessionalHRInterface key="outsourcing" setCurrentView={setCurrentView} defaultTab="outsourcing" />;
       case 'hr-performance':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="performance" />;
+        return <ProfessionalHRInterface key="performance" setCurrentView={setCurrentView} defaultTab="performance" />;
       case 'hr-timeoff':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="time-off" />;
+        return <ProfessionalHRInterface key="time-off" setCurrentView={setCurrentView} defaultTab="time-off" />;
       case 'hr-analytics':
-        return <ProfessionalHRInterface setCurrentView={setCurrentView} defaultTab="analytics" />;
+        return <ProfessionalHRInterface key="analytics" setCurrentView={setCurrentView} defaultTab="analytics" />;
 
       case 'admin':
       case 'users':
@@ -162,6 +160,106 @@ const ModernLayout: React.FC<ModernLayoutProps> = ({ children }) => {
               <h1 className="text-2xl font-bold text-gray-900 mb-6">Projects</h1>
               <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
                 <p className="text-gray-600">Projects component will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'tickets':
+        return <TicketCRUD setCurrentView={setCurrentView} />;
+
+      case 'tasks':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Tasks</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Tasks management component will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'sprints':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Sprints</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Sprint management component will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'analytics':
+      case 'analytics-dashboard':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Analytics Dashboard</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Analytics dashboard will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'reports':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Reports</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Reports component will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'insights':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Business Insights</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Business insights component will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'help':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Help Center</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Help center will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'contact':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Contact Support</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Contact support will be implemented here</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'notifications':
+        return (
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Notifications</h1>
+              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                <p className="text-gray-600">Notifications center will be implemented here</p>
               </div>
             </div>
           </div>

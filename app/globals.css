@@ -334,3 +334,13 @@ html {
 .dark tr:hover {
   background: oklch(0.16 0.008 240);
 }
+
+/* Hide scrollbars for tab navigation */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

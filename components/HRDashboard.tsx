@@ -1,454 +1,362 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 import {
   Users,
-  UserPlus,
+  Building2,
+  Briefcase,
+  Plus,
+  Search,
+  TrendingUp,
+  TrendingDown,
   Calendar,
   Clock,
+  DollarSign,
+  User,
   Award,
-  TrendingUp,
-  Search,
-  Filter,
-  MoreVertical,
-  Mail,
-  Phone,
-  MapPin,
-  Briefcase,
-  Star,
+  UserCheck,
+  UserPlus,
   Target,
-  CheckCircle2,
-  AlertCircle,
-  User
+  BarChart3,
+  Activity,
+  Bell,
+  Settings,
+  FileText,
+  CheckCircle,
+  AlertTriangle,
+  ArrowRight,
+  Star,
+  Zap
 } from 'lucide-react';
-import { createClient } from '@supabase/supabase-js';
-import { EmployeeModal, DepartmentModal } from './EmployeeModals';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-// Types
-interface Employee {
-  id: string;
-  employee_id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  display_name: string;
-  phone?: string;
-  department_id?: string;
-  position_id?: string;
-  manager_id?: string;
-  hire_date: string;
-  employment_status: 'active' | 'inactive' | 'terminated' | 'on_leave';
-  employment_type: 'full_time' | 'part_time' | 'contract' | 'intern';
-  salary?: number;
-  avatar_url?: string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
+interface HRDashboardProps {
+  setCurrentView?: (view: string) => void;
 }
 
-interface Department {
-  id: string;
-  name: string;
-  description?: string;
-  head_id?: string;
-  created_at: string;
-}
+const HRDashboard: React.FC<HRDashboardProps> = ({ setCurrentView }) => {
+  const [selectedTimeframe, setSelectedTimeframe] = useState('month');
 
-interface Position {
-  id: string;
-  title: string;
-  department_id?: string;
-  level?: string;
-  description?: string;
-  created_at: string;
-}
-
-interface TimeOffRequest {
-  id: string;
-  employee_id: string;
-  request_type: 'vacation' | 'sick' | 'personal' | 'bereavement' | 'maternity' | 'paternity';
-  start_date: string;
-  end_date: string;
-  total_days: number;
-  reason?: string;
-  status: 'pending' | 'approved' | 'rejected' | 'cancelled';
-  created_at: string;
-}
-
-const HRDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [positions, setPositions] = useState<Position[]>([]);
-  const [timeOffRequests, setTimeOffRequests] = useState<TimeOffRequest[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-  const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
-  const [showEmployeeModal, setShowEmployeeModal] = useState(false);
-  const [showDepartmentModal, setShowDepartmentModal] = useState(false);
-
-  // Fetch HR data
-  useEffect(() => {
-    const fetchHRData = async () => {
-      try {
-        setLoading(true);
-
-        const [employeesRes, departmentsRes, positionsRes, timeOffRes] = await Promise.all([
-          supabase.from('employees').select('*').order('created_at', { ascending: false }),
-          supabase.from('departments').select('*').order('name'),
-          supabase.from('positions').select('*').order('title'),
-          supabase.from('time_off_requests').select('*').order('created_at', { ascending: false })
-        ]);
-
-        if (employeesRes.error) throw employeesRes.error;
-        if (departmentsRes.error) throw departmentsRes.error;
-        if (positionsRes.error) throw positionsRes.error;
-        if (timeOffRes.error) throw timeOffRes.error;
-
-        setEmployees(employeesRes.data || []);
-        setDepartments(departmentsRes.data || []);
-        setPositions(positionsRes.data || []);
-        setTimeOffRequests(timeOffRes.data || []);
-      } catch (error) {
-        console.error('Error fetching HR data:', error);
-        toast.error('Failed to load HR data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHRData();
-  }, []);
-
-  const handleRefreshData = () => {
-    const fetchHRData = async () => {
-      try {
-        setLoading(true);
-
-        const [employeesRes, departmentsRes, positionsRes, timeOffRes] = await Promise.all([
-          supabase.from('employees').select('*').order('created_at', { ascending: false }),
-          supabase.from('departments').select('*').order('name'),
-          supabase.from('positions').select('*').order('title'),
-          supabase.from('time_off_requests').select('*').order('created_at', { ascending: false })
-        ]);
-
-        if (employeesRes.error) throw employeesRes.error;
-        if (departmentsRes.error) throw departmentsRes.error;
-        if (positionsRes.error) throw positionsRes.error;
-        if (timeOffRes.error) throw timeOffRes.error;
-
-        setEmployees(employeesRes.data || []);
-        setDepartments(departmentsRes.data || []);
-        setPositions(positionsRes.data || []);
-        setTimeOffRequests(timeOffRes.data || []);
-      } catch (error) {
-        console.error('Error fetching HR data:', error);
-        toast.error('Failed to load HR data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHRData();
-  };
-
-  const handleEditEmployee = (employee: Employee) => {
-    setSelectedEmployee(employee);
-    setShowEmployeeModal(true);
-  };
-
-  const handleAddEmployee = () => {
-    setSelectedEmployee(null);
-    setShowEmployeeModal(true);
-  };
-
-  const handleEditDepartment = (department: Department) => {
-    setSelectedDepartment(department);
-    setShowDepartmentModal(true);
-  };
-
-  const handleAddDepartment = () => {
-    setSelectedDepartment(null);
-    setShowDepartmentModal(true);
-  };
-
-  const handleEmployeeModalClose = () => {
-    setShowEmployeeModal(false);
-    setSelectedEmployee(null);
-  };
-
-  const handleDepartmentModalClose = () => {
-    setShowDepartmentModal(false);
-    setSelectedDepartment(null);
-  };
-
-  const handleModalSuccess = () => {
-    handleRefreshData();
-    toast.success('Data updated successfully');
-  };
-
-  // Filter employees based on search
-  const filteredEmployees = employees.filter(employee =>
-    employee.display_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.employee_id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Calculate statistics
-  const activeEmployees = employees.filter(emp => emp.employment_status === 'active').length;
-  const pendingTimeOff = timeOffRequests.filter(req => req.status === 'pending').length;
-  const departmentCount = departments.length;
-
-  const getEmployeeAvatar = (employee: Employee) => {
-    if (employee.avatar_url) return employee.avatar_url;
-    return null;
-  };
-
-  const getEmployeeInitials = (employee: Employee) => {
-    return `${employee.first_name.charAt(0)}${employee.last_name.charAt(0)}`.toUpperCase();
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-muted text-muted-foreground';
-      case 'on_leave': return 'bg-yellow-100 text-yellow-800';
-      case 'terminated': return 'bg-red-100 text-red-800';
-      default: return 'bg-muted text-muted-foreground';
+  const hrMetrics = [
+    {
+      title: 'Total Employees',
+      value: '245',
+      change: '+12',
+      changeType: 'increase',
+      icon: Users,
+      color: 'blue',
+      description: 'Active employees'
+    },
+    {
+      title: 'Departments',
+      value: '8',
+      change: '+1',
+      changeType: 'increase',
+      icon: Building2,
+      color: 'emerald',
+      description: 'Active departments'
+    },
+    {
+      title: 'Open Positions',
+      value: '23',
+      change: '+5',
+      changeType: 'increase',
+      icon: Briefcase,
+      color: 'purple',
+      description: 'Available roles'
+    },
+    {
+      title: 'Avg. Salary',
+      value: '$82K',
+      change: '+3.2%',
+      changeType: 'increase',
+      icon: DollarSign,
+      color: 'orange',
+      description: 'Annual average'
     }
-  };
+  ];
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'full_time': return 'bg-blue-100 text-blue-800';
-      case 'part_time': return 'bg-purple-100 text-purple-800';
-      case 'contract': return 'bg-orange-100 text-orange-800';
-      case 'intern': return 'bg-pink-100 text-pink-800';
-      default: return 'bg-muted text-muted-foreground';
+  const quickActions = [
+    {
+      title: 'Add Employee',
+      description: 'Onboard new team member',
+      icon: UserPlus,
+      color: 'from-blue-500 to-blue-600',
+      action: () => setCurrentView?.('hr-employees')
+    },
+    {
+      title: 'Manage Departments',
+      description: 'View and organize departments',
+      icon: Building2,
+      color: 'from-emerald-500 to-emerald-600',
+      action: () => setCurrentView?.('hr-departments')
+    },
+    {
+      title: 'Job Positions',
+      description: 'Create and manage positions',
+      icon: Briefcase,
+      color: 'from-purple-500 to-purple-600',
+      action: () => setCurrentView?.('hr-positions')
+    },
+    {
+      title: 'Time Off Requests',
+      description: 'Review leave applications',
+      icon: Calendar,
+      color: 'from-amber-500 to-amber-600',
+      action: () => setCurrentView?.('hr-timeoff')
+    },
+    {
+      title: 'Performance Reviews',
+      description: 'Track employee performance',
+      icon: Award,
+      color: 'from-indigo-500 to-indigo-600',
+      action: () => setCurrentView?.('hr-performance')
+    },
+    {
+      title: 'Recruitment',
+      description: 'Manage hiring process',
+      icon: UserCheck,
+      color: 'from-rose-500 to-rose-600',
+      action: () => setCurrentView?.('hr-recruitment')
     }
-  };
+  ];
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const recentActivity = [
+    {
+      type: 'employee',
+      title: 'New employee onboarded',
+      description: 'Sarah Johnson joined Product team',
+      time: '2 hours ago',
+      icon: UserPlus,
+      status: 'success'
+    },
+    {
+      type: 'leave',
+      title: 'Leave request approved',
+      description: 'Mike Davis - 3 days vacation',
+      time: '4 hours ago',
+      icon: Calendar,
+      status: 'info'
+    },
+    {
+      type: 'position',
+      title: 'New position posted',
+      description: 'Senior Frontend Developer',
+      time: '1 day ago',
+      icon: Briefcase,
+      status: 'success'
+    },
+    {
+      type: 'review',
+      title: 'Performance review completed',
+      description: 'Q4 reviews for Engineering team',
+      time: '2 days ago',
+      icon: Award,
+      status: 'info'
+    }
+  ];
+
+  const departmentOverview = [
+    {
+      name: 'Engineering',
+      employees: 45,
+      openPositions: 8,
+      budget: '$2.1M',
+      satisfaction: 92,
+      manager: 'John Smith'
+    },
+    {
+      name: 'Product',
+      employees: 32,
+      openPositions: 5,
+      budget: '$1.8M',
+      satisfaction: 89,
+      manager: 'Sarah Johnson'
+    },
+    {
+      name: 'Design',
+      employees: 18,
+      openPositions: 3,
+      budget: '$980K',
+      satisfaction: 94,
+      manager: 'Mike Davis'
+    },
+    {
+      name: 'Marketing',
+      employees: 28,
+      openPositions: 4,
+      budget: '$1.2M',
+      satisfaction: 87,
+      manager: 'Emily Brown'
+    }
+  ];
 
   return (
-    <div className="h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Human Resources</h1>
-            <p className="text-muted-foreground">Manage employees, performance, and organizational structure</p>
-          </div>
-          <Button onClick={handleAddEmployee} className="bg-blue-600 hover:bg-blue-700">
-            <UserPlus className="w-4 h-4 mr-2" />
-            Add Employee
-          </Button>
-        </div>
-
-        {/* Overview Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Users className="w-6 h-6 text-blue-600" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Active Employees</p>
-                  <p className="text-2xl font-bold text-foreground">{activeEmployees}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Briefcase className="w-6 h-6 text-green-600" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Departments</p>
-                  <p className="text-2xl font-bold text-foreground">{departmentCount}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-yellow-100 rounded-lg">
-                  <Calendar className="w-6 h-6 text-yellow-600" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Pending Time Off</p>
-                  <p className="text-2xl font-bold text-foreground">{pendingTimeOff}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <TrendingUp className="w-6 h-6 text-purple-600" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Avg Performance</p>
-                  <p className="text-2xl font-bold text-foreground">4.2</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Main Content Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="employees">Employees</TabsTrigger>
-            <TabsTrigger value="departments">Departments</TabsTrigger>
-            <TabsTrigger value="time-off">Time Off</TabsTrigger>
-            <TabsTrigger value="performance">Performance</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="mt-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Hires</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {employees.slice(0, 5).map((employee) => (
-                      <div key={employee.id} className="flex items-center space-x-4">
-                        <Avatar>
-                          <AvatarImage src={getEmployeeAvatar(employee)} />
-                          <AvatarFallback>{getEmployeeInitials(employee)}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">{employee.display_name}</p>
-                          <p className="text-xs text-gray-500">{employee.email}</p>
-                        </div>
-                        <Badge className={getStatusColor(employee.employment_status)}>
-                          {employee.employment_status}
-                        </Badge>
-                      </div>
-                    ))}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div className="max-w-7xl mx-auto px-8 py-8">
+        {/* Header */}
+        <div className="relative overflow-hidden bg-white rounded-2xl mb-8 shadow-lg">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"></div>
+          <div className="relative px-8 py-8">
+            <div className="flex items-center justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                    <Users className="w-6 h-6 text-white" />
                   </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Department Distribution</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {departments.map((dept) => {
-                      const deptEmployees = employees.filter(emp => emp.department_id === dept.id);
-                      return (
-                        <div key={dept.id} className="flex items-center justify-between">
-                          <span className="text-sm font-medium">{dept.name}</span>
-                          <Badge variant="outline">{deptEmployees.length} employees</Badge>
-                        </div>
-                      );
-                    })}
+                  <div>
+                    <h1 className="text-3xl font-bold text-slate-900">HR Management</h1>
+                    <p className="text-slate-600 text-sm font-medium">Enterprise Workforce Management Dashboard</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-emerald-100 rounded-full">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <span className="text-sm font-medium text-emerald-700">All Systems Operational</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full">
+                    <Calendar className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium text-blue-700">Q4 2024</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Button variant="outline" className="gap-2">
+                  <FileText className="w-4 h-4" />
+                  Reports
+                </Button>
+                <Button
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 gap-2"
+                  onClick={() => setCurrentView?.('hr-employees')}
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Employee
+                </Button>
+              </div>
             </div>
-          </TabsContent>
+          </div>
+        </div>
 
-          <TabsContent value="employees" className="mt-6">
+        {/* Key Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {hrMetrics.map((metric, index) => (
+            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`w-12 h-12 bg-${metric.color}-100 rounded-lg flex items-center justify-center`}>
+                    <metric.icon className={`w-6 h-6 text-${metric.color}-600`} />
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {metric.changeType === 'increase' ? (
+                      <TrendingUp className="w-4 h-4 text-emerald-500" />
+                    ) : (
+                      <TrendingDown className="w-4 h-4 text-red-500" />
+                    )}
+                    <span className={`text-sm font-semibold ${
+                      metric.changeType === 'increase' ? 'text-emerald-600' : 'text-red-600'
+                    }`}>
+                      {metric.change}
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-bold text-2xl text-slate-900">{metric.value}</h3>
+                  <p className="font-medium text-slate-900">{metric.title}</p>
+                  <p className="text-sm text-slate-600">{metric.description}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-slate-900">Quick Actions</h2>
+            <Button variant="outline" size="sm" className="gap-2">
+              <Settings className="w-4 h-4" />
+              Customize
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {quickActions.map((action, index) => (
+              <Card
+                key={index}
+                className="group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-slate-200"
+                onClick={action.action}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${action.color} rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
+                      <action.icon className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition-colors duration-300">
+                        {action.title}
+                      </h3>
+                      <p className="text-sm text-slate-600">{action.description}</p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 group-hover:translate-x-1 transition-all duration-300" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Department Overview */}
+          <div className="lg:col-span-2">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle>Employee Directory</CardTitle>
-                  <div className="flex items-center space-x-2">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                      <Input
-                        placeholder="Search employees..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 w-64"
-                      />
-                    </div>
-                    <Button variant="outline" size="sm">
-                      <Filter className="w-4 h-4 mr-2" />
-                      Filter
-                    </Button>
-                  </div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Building2 className="w-5 h-5" />
+                    Department Overview
+                  </CardTitle>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentView?.('hr-departments')}
+                  >
+                    View All
+                  </Button>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredEmployees.map((employee) => (
-                    <div key={employee.id} className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center space-x-3">
-                          <Avatar className="w-12 h-12">
-                            <AvatarImage src={getEmployeeAvatar(employee)} />
-                            <AvatarFallback className="bg-blue-100 text-blue-600">
-                              {getEmployeeInitials(employee)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <h3 className="font-semibold text-foreground">{employee.display_name}</h3>
-                            <p className="text-sm text-gray-500">{employee.employee_id}</p>
-                          </div>
+                <div className="space-y-4">
+                  {departmentOverview.map((dept, index) => (
+                    <div key={index} className="p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors duration-200">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h4 className="font-bold text-slate-900">{dept.name}</h4>
+                          <p className="text-sm text-slate-600">Manager: {dept.manager}</p>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEditEmployee(employee)}
-                        >
-                          <MoreVertical className="w-4 h-4" />
-                        </Button>
-                      </div>
-
-                      <div className="space-y-2 mb-3">
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <Mail className="w-4 h-4 mr-2" />
-                          {employee.email}
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            dept.satisfaction >= 90 ? 'bg-emerald-100 text-emerald-700' :
+                            dept.satisfaction >= 85 ? 'bg-yellow-100 text-yellow-700' :
+                            'bg-red-100 text-red-700'
+                          }`}>
+                            {dept.satisfaction}% satisfaction
+                          </span>
                         </div>
-                        {employee.phone && (
-                          <div className="flex items-center text-sm text-muted-foreground">
-                            <Phone className="w-4 h-4 mr-2" />
-                            {employee.phone}
-                          </div>
-                        )}
                       </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <Badge className={getStatusColor(employee.employment_status)}>
-                            {employee.employment_status}
-                          </Badge>
-                          <Badge className={getTypeColor(employee.employment_type)}>
-                            {employee.employment_type.replace('_', ' ')}
-                          </Badge>
+                      <div className="grid grid-cols-3 gap-4 text-sm">
+                        <div>
+                          <span className="text-slate-600">Employees:</span>
+                          <p className="font-semibold">{dept.employees}</p>
+                        </div>
+                        <div>
+                          <span className="text-slate-600">Open Positions:</span>
+                          <p className="font-semibold">{dept.openPositions}</p>
+                        </div>
+                        <div>
+                          <span className="text-slate-600">Budget:</span>
+                          <p className="font-semibold">{dept.budget}</p>
                         </div>
                       </div>
                     </div>
@@ -456,149 +364,88 @@ const HRDashboard: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
 
-          <TabsContent value="departments" className="mt-6">
+          {/* Recent Activity */}
+          <div className="space-y-6">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Departments & Teams</CardTitle>
-                  <Button onClick={handleAddDepartment} variant="outline" size="sm">
-                    <UserPlus className="w-4 h-4 mr-2" />
-                    Add Department
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {departments.map((dept) => {
-                    const deptEmployees = employees.filter(emp => emp.department_id === dept.id);
-                    return (
-                      <div key={dept.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleEditDepartment(dept)}>
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-semibold text-foreground">{dept.name}</h3>
-                          <Badge variant="outline">{deptEmployees.length}</Badge>
-                        </div>
-                        {dept.description && (
-                          <p className="text-sm text-muted-foreground mb-4">{dept.description}</p>
-                        )}
-                        <div className="flex -space-x-2">
-                          {deptEmployees.slice(0, 5).map((employee) => (
-                            <Avatar key={employee.id} className="w-8 h-8 border-2 border-white">
-                              <AvatarImage src={getEmployeeAvatar(employee)} />
-                              <AvatarFallback className="text-xs bg-blue-100 text-blue-600">
-                                {getEmployeeInitials(employee)}
-                              </AvatarFallback>
-                            </Avatar>
-                          ))}
-                          {deptEmployees.length > 5 && (
-                            <div className="w-8 h-8 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center">
-                              <span className="text-xs text-muted-foreground">+{deptEmployees.length - 5}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="time-off" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Time Off Requests</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="w-5 h-5" />
+                  Recent Activity
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {timeOffRequests.map((request) => {
-                    const employee = employees.find(emp => emp.id === request.employee_id);
-                    return (
-                      <div key={request.id} className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <Avatar>
-                              <AvatarImage src={employee ? getEmployeeAvatar(employee) : undefined} />
-                              <AvatarFallback>
-                                {employee ? getEmployeeInitials(employee) : 'N/A'}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <h3 className="font-semibold">{employee?.display_name || 'Unknown Employee'}</h3>
-                              <p className="text-sm text-muted-foreground">
-                                {request.request_type} • {request.total_days} days
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {new Date(request.start_date).toLocaleDateString()} - {new Date(request.end_date).toLocaleDateString()}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Badge className={
-                              request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              request.status === 'approved' ? 'bg-green-100 text-green-800' :
-                              'bg-red-100 text-red-800'
-                            }>
-                              {request.status}
-                            </Badge>
-                            {request.status === 'pending' && (
-                              <div className="flex space-x-1">
-                                <Button size="sm" variant="outline" className="text-green-600 hover:bg-green-50">
-                                  <CheckCircle2 className="w-4 h-4" />
-                                </Button>
-                                <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50">
-                                  <AlertCircle className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                  {recentActivity.map((activity, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                        activity.status === 'success' ? 'bg-emerald-100' :
+                        activity.status === 'info' ? 'bg-blue-100' :
+                        'bg-slate-100'
+                      }`}>
+                        <activity.icon className={`w-4 h-4 ${
+                          activity.status === 'success' ? 'text-emerald-600' :
+                          activity.status === 'info' ? 'text-blue-600' :
+                          'text-slate-600'
+                        }`} />
                       </div>
-                    );
-                  })}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-slate-900 text-sm">{activity.title}</p>
+                        <p className="text-xs text-slate-600 mb-1">{activity.description}</p>
+                        <p className="text-xs text-slate-500">{activity.time}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
 
-          <TabsContent value="performance" className="mt-6">
+            {/* Performance Summary */}
             <Card>
               <CardHeader>
-                <CardTitle>Performance Overview</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5" />
+                  Performance Summary
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-12">
-                  <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Performance Management</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Track employee performance, set goals, and conduct reviews.
-                  </p>
-                  <Button>
-                    <Target className="w-4 h-4 mr-2" />
-                    Set Up Performance Reviews
-                  </Button>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Employee Satisfaction</span>
+                      <span className="text-sm font-bold">91%</span>
+                    </div>
+                    <div className="w-full bg-slate-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full" style={{ width: '91%' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Retention Rate</span>
+                      <span className="text-sm font-bold">94%</span>
+                    </div>
+                    <div className="w-full bg-slate-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full" style={{ width: '94%' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Time to Hire</span>
+                      <span className="text-sm font-bold">18 days</span>
+                    </div>
+                    <div className="w-full bg-slate-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full" style={{ width: '75%' }}></div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
       </div>
-
-      {/* Modals */}
-      <EmployeeModal
-        isOpen={showEmployeeModal}
-        onClose={handleEmployeeModalClose}
-        employee={selectedEmployee}
-        onSuccess={handleModalSuccess}
-      />
-
-      <DepartmentModal
-        isOpen={showDepartmentModal}
-        onClose={handleDepartmentModalClose}
-        department={selectedDepartment}
-        onSuccess={handleModalSuccess}
-      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Home,
   Ticket,
@@ -57,6 +58,7 @@ const ModernSidebar: React.FC<ModernSidebarProps> = ({
   setCurrentView,
   isMobile = false
 }) => {
+  const router = useRouter();
   const { user, signOut } = useAuth();
   const [expandedSections, setExpandedSections] = useState<string[]>(['main', 'hr', 'talent-hunt', 'acquisition', 'project-management']);
 
@@ -116,7 +118,7 @@ const ModernSidebar: React.FC<ModernSidebarProps> = ({
       icon: <Search className="w-5 h-5" />,
       view: 'hr-talent-hunt',
       children: [
-        { id: 'recruitment', label: 'Recruitment', icon: <UserPlus className="w-4 h-4" />, view: 'hr-recruitment' }
+        { id: 'recruitment', label: 'Recruitment', icon: <UserPlus className="w-4 h-4" />, view: 'hr-recruitment', badge: 'NEW' }
       ]
     },
     {

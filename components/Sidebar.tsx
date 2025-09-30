@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { Search, Bell, Tag, Users, Calendar, Activity, MessageSquare, User, Mail, ChevronLeft, Ticket, Settings, Shield, BarChart3, FileText, HelpCircle, Phone, LogOut, FolderKanban, CheckSquare, Target, Layers, UserCheck, Handshake } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 
@@ -25,6 +27,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   collapsed,
   onToggle
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const isCollapsed = collapsed ?? sidebarCollapsed ?? false;
   const toggleSidebar = onToggle ?? setSidebarCollapsed ?? (() => {});
   const { user, signOut } = useAuth();
@@ -63,13 +67,13 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Navigation Section - Hide on mobile when collapsed */}
-      <nav className={`${isMobile && sidebarCollapsed ? 'hidden' : 'flex-1'} ${sidebarCollapsed ? 'p-2' : 'p-2 md:p-4'} ${sidebarCollapsed ? 'space-y-2' : 'space-y-1'} ${sidebarCollapsed ? '' : 'overflow-y-auto'}`}>
+      <nav className={`${isMobile && isCollapsed ? 'hidden' : 'flex-1'} ${isCollapsed ? 'p-2' : 'p-2 md:p-4'} ${isCollapsed ? 'space-y-2' : 'space-y-1'} ${isCollapsed ? '' : 'overflow-y-auto'}`}>
         {/* Primary Navigation */}
-        <div className={sidebarCollapsed ? 'space-y-2' : 'space-y-1'}>
+        <div className={isCollapsed ? 'space-y-2' : 'space-y-1'}>
           {/* Dashboard */}
           <div
             onClick={() => setCurrentView('list')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'list'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
@@ -86,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 }`}>{tickets?.length || 0}</span>
               </div>
             )}
-            {sidebarCollapsed && (
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Tickets
               </div>
@@ -96,15 +100,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Projects */}
           <div
             onClick={() => setCurrentView('projects')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'projects'
                 ? 'text-white bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <FolderKanban className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Projects</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Projects</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Projects
               </div>
@@ -114,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Professional Agile */}
           <div
             onClick={() => setCurrentView('professional-agile')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'professional-agile'
                 ? 'text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
@@ -127,7 +131,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <span className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs px-2 py-1 rounded-full font-semibold">NEW</span>
               </div>
             )}
-            {sidebarCollapsed && (
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Professional Agile
               </div>
@@ -137,15 +141,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Tasks */}
           <div
             onClick={() => setCurrentView('tasks')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'tasks'
                 ? 'text-white bg-gradient-to-r from-orange-600 to-red-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <CheckSquare className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Tasks</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Tasks</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Tasks
               </div>
@@ -155,7 +159,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* HR Management */}
           <div
             onClick={() => setCurrentView('hr')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'hr'
                 ? 'text-white bg-gradient-to-r from-rose-600 to-pink-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
@@ -168,7 +172,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <span className="bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full font-semibold">NEW</span>
               </div>
             )}
-            {sidebarCollapsed && (
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 HR Management
               </div>
@@ -178,15 +182,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Talent Hunt */}
           <div
             onClick={() => setCurrentView('hr-talent-hunt')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'hr-talent-hunt'
                 ? 'text-white bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <Search className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Talent Hunt</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Talent Hunt</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Talent Hunt
               </div>
@@ -196,15 +200,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Acquisition */}
           <div
             onClick={() => setCurrentView('hr-acquisition')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'hr-acquisition'
                 ? 'text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <UserCheck className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Acquisition</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Acquisition</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Acquisition
               </div>
@@ -214,33 +218,57 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Outsourcing */}
           <div
             onClick={() => setCurrentView('hr-outsourcing')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'hr-outsourcing'
                 ? 'text-white bg-gradient-to-r from-amber-600 to-orange-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <Handshake className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Outsourcing</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Outsourcing</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Outsourcing
               </div>
             )}
           </div>
 
+          {/* Interview Recruitment */}
+          <Link href="/recruitment" className="block">
+            <div
+              className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+                pathname === '/recruitment'
+                  ? 'text-white bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg'
+                  : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
+              }`}
+            >
+              <Target className="w-5 h-5 flex-shrink-0" />
+              {!isCollapsed && (
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Interview Recruitment</span>
+                  <span className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs px-2 py-1 rounded-full font-semibold">NEW</span>
+                </div>
+              )}
+              {isCollapsed && (
+                <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
+                  Interview Recruitment
+                </div>
+              )}
+            </div>
+          </Link>
+
           {/* Users */}
           <div
             onClick={() => setCurrentView('users')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'users'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <User className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Users</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Users</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Users
               </div>
@@ -250,15 +278,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Analytics */}
           <div
             onClick={() => setCurrentView('analytics')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'analytics'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <BarChart3 className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Analytics</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Analytics</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Analytics
               </div>
@@ -268,15 +296,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Knowledge Base */}
           <div
             onClick={() => setCurrentView('knowledge-base')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'knowledge-base'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <FileText className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Knowledge Base</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Knowledge Base</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Knowledge Base
               </div>
@@ -286,7 +314,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Notifications */}
           <div
             onClick={() => setCurrentView('notifications')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'notifications'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
@@ -303,7 +331,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 }`}>3</span>
               </div>
             )}
-            {sidebarCollapsed && (
+            {isCollapsed && (
               <>
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
                 <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
@@ -316,15 +344,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Reports */}
           <div
             onClick={() => setCurrentView('reports')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'reports'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <Activity className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Reports</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Reports</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Reports
               </div>
@@ -333,23 +361,23 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Admin Section - Now accessible to everyone */}
-        {!sidebarCollapsed && (
+        {!isCollapsed && (
           <div className="pt-6">
             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-3">Administration</h3>
           </div>
         )}
-        <div className={sidebarCollapsed ? 'space-y-2' : 'space-y-1'}>
+        <div className={isCollapsed ? 'space-y-2' : 'space-y-1'}>
           <div
             onClick={() => setCurrentView('admin')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'admin'
                 ? 'text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <Shield className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Admin Dashboard</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Admin Dashboard</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Admin Dashboard
               </div>
@@ -358,25 +386,25 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Support Section */}
-        {!sidebarCollapsed && (
+        {!isCollapsed && (
           <div className="pt-6">
             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-3">Support</h3>
           </div>
         )}
 
-        <div className={sidebarCollapsed ? 'space-y-2' : 'space-y-1'}>
+        <div className={isCollapsed ? 'space-y-2' : 'space-y-1'}>
           {/* Help Center */}
           <div
             onClick={() => setCurrentView('help')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'help'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <HelpCircle className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Help Center</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Help Center</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Help Center
               </div>
@@ -386,15 +414,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Contact */}
           <div
             onClick={() => setCurrentView('contact')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'contact'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <Phone className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Contact</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Contact</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Contact
               </div>
@@ -404,15 +432,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Settings */}
           <div
             onClick={() => setCurrentView('settings')}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
+            className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'gap-3 p-2 md:p-3'} rounded-xl cursor-pointer group relative transition-all duration-200 ${
               currentView === 'settings'
                 ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
             }`}
           >
             <Settings className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span className="font-medium">Settings</span>}
-            {sidebarCollapsed && (
+            {!isCollapsed && <span className="font-medium">Settings</span>}
+            {isCollapsed && (
               <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
                 Settings
               </div>
@@ -422,17 +450,17 @@ const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       {/* Footer Section - Collapse Button */}
-      {!(isMobile && sidebarCollapsed) && (
+      {!(isMobile && isCollapsed) && (
         <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          onClick={() => toggleSidebar(!isCollapsed)}
           className="w-full flex items-center justify-center p-3 hover:bg-slate-100 rounded-xl transition-all duration-200 group relative"
         >
-          {sidebarCollapsed ? (
+          {isCollapsed ? (
             <ChevronLeft className="w-5 h-5 text-slate-400 rotate-180" />
           ) : (
             <ChevronLeft className="w-5 h-5 text-slate-400" />
           )}
-          {sidebarCollapsed && (
+          {isCollapsed && (
             <div className="absolute left-16 bg-slate-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-lg">
               Expand Menu
             </div>
@@ -442,9 +470,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           )}
         </button>
       )}
-      <div className={`${isMobile && sidebarCollapsed ? 'hidden' : ''} ${sidebarCollapsed ? 'p-2' : 'p-2 md:p-4'} border-t border-slate-200`}>
+      <div className={`${isMobile && isCollapsed ? 'hidden' : ''} ${isCollapsed ? 'p-2' : 'p-2 md:p-4'} border-t border-slate-200`}>
         {/* User Info and Logout */}
-        {!sidebarCollapsed ? (
+        {!isCollapsed ? (
           <div className="space-y-3">
             {/* User Profile */}
             <div className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg">

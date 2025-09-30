@@ -738,7 +738,7 @@ const ProfessionalAgileBoard: React.FC<ProfessionalAgileBoardProps> = ({
   return (
     <div className="h-full bg-gradient-to-br from-gray-50 to-white">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex gap-2 h-full p-4 w-full overflow-x-auto">
+        <div className="flex gap-2 h-full px-8 py-4 w-full overflow-x-auto">
           {columns.map((column) => {
             const columnItems = getItemsByStatus(column.id);
 
